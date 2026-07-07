@@ -112,6 +112,12 @@ const ASPECT_RATIO_CLASS: Record<MediaAspectRatio, string> = {
   wide: 'aspect-[16/9]',
 };
 
+// preset 값만으로 바로 클래스를 찾는 버전이다. MediaImage처럼 이미지를 못 찾아 ResolvedMediaItem이
+// 없는 상황(파일 없음)에서도, 요청한 aspectRatio만큼은 그리드 레이아웃이 무너지지 않게 유지해야 할 때 쓴다.
+export function getAspectRatioClassForPreset(preset: MediaAspectRatio): string {
+  return ASPECT_RATIO_CLASS[preset];
+}
+
 export function getAspectRatioClass(resolved: ResolvedMediaItem): string {
-  return ASPECT_RATIO_CLASS[resolved.aspectRatio];
+  return getAspectRatioClassForPreset(resolved.aspectRatio);
 }

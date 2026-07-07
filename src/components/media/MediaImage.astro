@@ -1,0 +1,90 @@
+---
+import {
+  normalizeMediaItem,
+  getObjectFitClass,
+  getObjectPositionClass,
+  getAspectRatioClassForPreset,
+} from '../../lib/mediaDisplay';
+import type { MediaAspectRatio, MediaFit, MediaItemInput } from '../../types/media';
+
+// [MediaImage] About/Portfolio/Gallery/Before-After/Review/Service 카드 등 앞으로 만들 모든
+// "일반 섹션" 이미지가 공통으로 재사용하는 단일 이미지 컴포넌트다. 섹션이 100개로 늘어나도
+// 이미지 확장자 탐색·fit·position·aspectRatio·fallback 처리를 매번 새로 짜지 않도록 여기 한 곳에 모은다.
+// Hero(여러 장 크로스페이드 배경 + overlay)와 Header 로고(logoText 텍스트 fallback)는 요구사항이
+// 특수해서 이 컴포넌트로 억지로 흡수하지 않고, 지금처럼 mediaResolver/mediaDisplay 공통 유틸만
+// 각자 직접 사용한다(HeroMedia01.astro, Header01.astro는 이번 단계에서 바꾸지 않는다).
+interface Props {
+  media: MediaItemInput;
+  alt?: string;
+  class?: string;
+  wrapperClass?: string;
+  loading?: 'lazy' | 'eager';
+  defaultFit?: MediaFit;
+  defaultPosition?: string;
+  defaultAspectRatio?: MediaAspectRatio;
+  fallbackClass?: string;
+}
+
+const {
+  media,
+  alt,
+  class: imageClass,
+  wrapperClass,
+  loading = 'lazy', // 일반 섹션 이미지는 대부분 스크롤해야 보이므로 기본은 지연 로딩이 적합하다.
+  defaultFit = 'cover',
+  defaultPosition = 'center',
+  defaultAspectRatio = 'auto',
+  fallbackClass = 'bg-neutral-800',
+} = Astro.props;
+
+// normalizeMediaItem이 확장자 없는 경로를 실제 public 파일로 찾아준다(mediaResolver 재사용).
+// 파일이 없으면 resolved가 null이 되고, 아래 마크업에서 <img> 자체를 렌더링하지 않는다.
+// onerror로 깨진 이미지를 숨기는 방식이 아니라, 빌드 시점에 파일이 없으면 애초에 img를 만들지
+// 않으므로 브라우저에서 404 요청 자체가 발생하지 않는다 -> 대신 fallback 박스(배경색)만 보인다.
+const resolved = normalizeMediaItem(media, {
+  defaultFit,
+  defaultPosition,
+  defaultAspectRatio,
+  defaultBackgroundColor: fallbackClass,
+});
+
+// alt 우선순위: 1) 호출부가 명시적으로 넘긴 alt prop
+//              2) media가 객체형이고 자체 alt를 담고 있으면 그 값(resolved.alt)
+//              3) 둘 다 없으면 빈 문자열(장식용 이미지로 취급)
+const resolvedAlt = alt ?? resolved?.alt ?? '';
+
+// 파일이 없어도(resolved === null) 요청한 aspectRatio는 그대로 유지해서 그리드/카드 크기가
+// 무너지지 않게 한다. 단, aspectRatio를 기본값 'auto'로 두고 이미지도 없으면 높이를 고정할
+// 근거가 없어 박스가 0px로 접힐 수 있다 - 이미지가 없을 가능성이 있는 자리는 aspectRatio를
+// square/video/portrait/wide 중 하나로 명시하는 것을 권장한다.
+const aspectRatioPreset = resolved?.aspectRatio ?? defaultAspectRatio;
+---
+
+<!--
+  고객 사진이 특정 부분에서 잘리면, 이 컴포넌트나 섹션 코드를 고치지 않고
+  config에서 해당 media 항목을 객체형으로 바꿔 fit/position/aspectRatio 값만 조정하면 된다.
+  fit/position/aspectRatio 모두 Tailwind v4 동적 클래스 문제를 피하기 위해
+  mediaDisplay.ts의 고정 lookup map(getObjectFitClass 등)을 거쳐서만 클래스로 변환된다.
+-->
+<div
+  class:list={[
+    'relative w-full overflow-hidden',
+    getAspectRatioClassForPreset(aspectRatioPreset),
+    resolved?.backgroundColor ?? fallbackClass,
+    wrapperClass,
+  ]}
+>
+  {resolved && (
+    <img
+      src={resolved.src}
+      alt={resolvedAlt}
+      loading={loading}
+      class:list={[
+        'h-full w-full',
+        getObjectFitClass(resolved),
+        getObjectPositionClass(resolved),
+        imageClass,
+      ]}
+    />
+  )}
+</div>
