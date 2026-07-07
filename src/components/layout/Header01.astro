@@ -1,4 +1,6 @@
 ---
+import { resolveMediaPath } from '../../lib/mediaResolver';
+
 // [1] Astro.props에서 header config 데이터를 받는 부분이다.
 // index.astro에서 clientConfig.header의 각 필드를 그대로 넘겨준다.
 interface NavItem {
@@ -20,6 +22,16 @@ interface Props {
 }
 
 const { logo, logoText, sticky, navItems, cta } = Astro.props;
+
+// header.logo도 Hero 이미지(HeroMedia01)와 같은 확장자 자동 탐색 규칙(mediaResolver)을 사용한다.
+// 고객이 로고 파일을 jpg/png/webp/avif 중 어떤 확장자로 넣어도 config는
+// "/clients/{clientId}/logo"처럼 확장자 없는 경로로 유지할 수 있다.
+// resolveMediaPath가 빌드 시점에 public 폴더에서 실제 파일을 찾고, 없으면 null을 반환한다.
+// null이면 아래 마크업에서 <img> 자체를 렌더링하지 않으므로, onerror에 기대지 않고도
+// 애초에 로고 파일에 대한 404 요청이 발생하지 않는다 -> logoText 텍스트 로고로 자연스럽게 대체된다.
+// 나중에 고객별 실제 로고 파일이 public 폴더에 들어와도, 이 컴포넌트 코드는 그대로 두고
+// config의 logo 경로와 public 파일만 맞추면 된다.
+const resolvedLogo = logo ? resolveMediaPath(logo) : null;
 ---
 
 <!-- [6] sticky 여부에 따라 헤더를 화면 상단에 고정할지 결정하는 핵심 분기다. -->
@@ -30,15 +42,18 @@ const { logo, logoText, sticky, navItems, cta } = Astro.props;
   ]}
 >
   <div class="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 lg:h-[72px] lg:px-8">
-    <!-- [2] 로고 처리: logoText는 항상 표시하고, logo 이미지가 있을 때만 함께 보여준다. -->
-    <!-- 이미지 경로가 없거나(public에 파일이 없어 404가 나도) onerror로 img만 숨겨서 레이아웃이 깨지지 않게 한다. -->
+    <!-- [2] 로고 처리: logoText는 항상 표시하고, resolvedLogo(실제 존재하는 파일)가 있을 때만 img를 함께 보여준다. -->
+    <!-- 로고 파일이 없으면 위 frontmatter에서 resolvedLogo가 null이 되어 img 자체가 렌더링되지 않고, -->
+    <!-- logoText만 텍스트 로고로 표시된다(404 요청 자체가 생기지 않는다). -->
     <a href="#" class="flex min-w-0 items-center gap-2">
-      {logo && (
+      <!-- 로고는 배경 이미지와 달리 잘리면 안 되므로 cover가 아니라 contain 방식(비율 유지, 전체 노출)이 -->
+      <!-- 자연스럽다. 여기서는 h-8로 높이만 고정하고 w-auto로 너비를 비율대로 늘려서, -->
+      <!-- object-fit 없이도 로고 전체가 항상 잘리지 않고 보이도록 한다. -->
+      {resolvedLogo && (
         <img
-          src={logo}
+          src={resolvedLogo}
           alt={logoText}
           class="h-8 w-auto shrink-0"
-          onerror="this.style.display='none'"
         />
       )}
       <span class="truncate text-base font-bold tracking-wide text-white lg:text-lg">
