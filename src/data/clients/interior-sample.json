@@ -1,0 +1,46 @@
+{
+  "site": {
+    "clientId": "interior-sample",
+    "businessName": "진용 프리미엄 인테리어",
+    "businessType": "인테리어",
+    "phone": "010-1234-5678",
+    "kakaoUrl": "https://pf.kakao.com/_sample",
+    "address": "서울특별시 강남구 테헤란로 123",
+    "description": "20년 경력의 노하우로 완성하는 프리미엄 주거·상업 공간 인테리어"
+  },
+  "header": {
+    "logo": "/clients/interior-sample/logo.png",
+    "logoText": "진용 프리미엄 인테리어",
+    "sticky": true,
+    "navItems": [
+      { "label": "회사소개", "target": "about" },
+      { "label": "시공사례", "target": "portfolio" },
+      { "label": "진행절차", "target": "process" },
+      { "label": "고객후기", "target": "reviews" },
+      { "label": "상담문의", "target": "contact" }
+    ],
+    "cta": { "label": "무료 상담 신청", "target": "contact" }
+  },
+  "hero": {
+    "id": "hero-01",
+    "type": "HeroMedia01",
+    "mediaType": "image",
+    "title": "당신의 공간을 완성하는\n프리미엄 인테리어",
+    "subtitle": "진용 프리미엄 인테리어",
+    "description": "설계부터 시공, A/S까지 한 번에 책임지는 인테리어 전문가",
+    "media": ["/clients/interior-sample/hero-01"],
+    "buttons": [
+      { "label": "무료 견적 받기", "target": "contact", "style": "primary" },
+      { "label": "시공사례 보기", "target": "portfolio", "style": "secondary" }
+    ],
+    "overlay": true,
+    "autoplaySpeed": 5000
+  },
+  "sections": {
+    "about": { "id": "about", "enabled": true, "title": "회사소개" },
+    "portfolio": { "id": "portfolio", "enabled": true, "title": "시공사례" },
+    "process": { "id": "process", "enabled": true, "title": "진행절차" },
+    "reviews": { "id": "reviews", "enabled": true, "title": "고객후기" },
+    "contact": { "id": "contact", "enabled": true, "title": "상담문의" }
+  }
+}

@@ -1,0 +1,28 @@
+---
+import '../styles/global.css';
+
+const {
+  title = '원페이지 홈페이지',
+  description = '소상공인 원페이지 홈페이지'
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+
+    <!-- 모바일 반응형을 위해 필수인 viewport 설정이다. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- 검색 결과나 브라우저 탭에서 사용할 기본 설명이다. -->
+    <meta name="description" content={description} />
+
+    <title>{title}</title>
+  </head>
+
+  <body class="bg-white text-neutral-900">
+    <!-- 각 페이지의 실제 내용이 이 slot 안에 들어온다. -->
+    <slot />
+  </body>
+</html>

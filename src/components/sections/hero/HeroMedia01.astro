@@ -1,0 +1,169 @@
+---
+import { normalizeMediaList, getObjectFitClass, getObjectPositionClass } from '../../../lib/mediaDisplay';
+import type { MediaItemInput } from '../../../types/media';
+
+// [1] Astro.props에서 hero config 데이터를 받는 부분이다.
+// index.astro에서 clientConfig.hero의 각 필드를 그대로 넘겨준다.
+interface HeroButton {
+  label: string;
+  target: string;
+  style: 'primary' | 'secondary';
+}
+
+interface Props {
+  id: string;
+  type: string;
+  mediaType: string;
+  title: string;
+  subtitle?: string;
+  description?: string;
+  // media는 string[](빠른 config 작성용)과 MediaItemObject[](fit/position 등을 세밀히 제어)를
+  // 섞어서 받을 수 있다. 기존 string[] config가 그대로 동작하는 하위 호환 방식이다.
+  media: MediaItemInput[];
+  buttons: HeroButton[];
+  overlay: boolean;
+  autoplaySpeed?: number;
+}
+
+const {
+  id,
+  mediaType,
+  title,
+  subtitle,
+  description,
+  media,
+  buttons,
+  overlay,
+  autoplaySpeed = 5000,
+} = Astro.props;
+
+// 나중에 mediaType === 'video'가 추가되면 아래 배경 레이어를 <video> 분기로 확장할 수 있는 지점이다.
+// 지금은 image/slider(이미지 여러 장)만 처리한다.
+
+// media를 그대로 쓰지 않고 정규화된 resolvedMedia(ResolvedMediaItem[])를 쓰는 이유:
+// 1) media가 string이든 객체든 이 한 번의 호출로 공통 형태(src/fit/position 등)로 합쳐진다.
+// 2) normalizeMediaList가 내부에서 mediaResolver.resolveMediaPath를 호출해 실제 public 파일이
+//    없는 항목은 걸러내므로, 존재하지 않는 이미지에 대한 <img> 태그 자체가 생기지 않는다(404 방지).
+// Hero의 기본값은 지금까지와 동일하게 cover/center를 쓰므로, 기존 string[] config는 화면이 그대로 유지된다.
+const resolvedMedia = normalizeMediaList(media, { defaultFit: 'cover', defaultPosition: 'center' });
+---
+
+<section id={id} class="relative w-full min-h-[100svh] overflow-hidden bg-neutral-900">
+  <!-- 배경 레이어: 항상 fallback 배경색을 먼저 깔아서 이미지가 없거나 깨져도 섹션 자체는 무너지지 않게 한다. -->
+  <div class="absolute inset-0 bg-neutral-800">
+    <!-- [resolvedMedia 배열 개수로 표시 방식을 결정하는 부분] -->
+    <!-- 이미지가 1장이면 고정 배경처럼 표시한다. -->
+    <!-- fit이 cover/contain으로 나뉘는 이유: cover는 영역을 꽉 채우되 일부가 잘릴 수 있고, -->
+    <!-- contain은 사진 전체를 보여주되 여백이 생길 수 있다. 특정 고객 사진이 중요한 부분에서 -->
+    <!-- 잘리면, 코드를 고치지 않고 config에서 해당 media 항목을 객체형으로 바꿔 fit/position만 -->
+    <!-- 조정하면 된다(예: { src: "...", fit: "contain", position: "top" }). -->
+    {resolvedMedia.length === 1 && (
+      <img
+        src={resolvedMedia[0].src}
+        alt={resolvedMedia[0].alt}
+        class:list={[
+          'h-full w-full',
+          getObjectFitClass(resolvedMedia[0]),
+          // 확장 포인트: 지금은 position 값 하나를 모바일/PC 공통으로 쓴다. 나중에 모바일에서만
+          // 다른 초점을 쓰고 싶으면 mobilePosition을 반영한 responsive 버전으로 넓히면 된다.
+          getObjectPositionClass(resolvedMedia[0]),
+        ]}
+        onerror="this.style.display='none'"
+      />
+    )}
+
+    <!-- 이미지가 2장 이상이면 겹쳐 쌓아두고, 아래 script가 opacity를 토글해 자동 전환한다. -->
+    {resolvedMedia.length >= 2 && (
+      <div data-hero-slider={autoplaySpeed} class="relative h-full w-full">
+        {resolvedMedia.map((item, index) => (
+          <img
+            src={item.src}
+            alt={item.alt}
+            data-hero-slide
+            class:list={[
+              'absolute inset-0 h-full w-full transition-opacity duration-1000',
+              getObjectFitClass(item),
+              getObjectPositionClass(item),
+              index === 0 ? 'opacity-100' : 'opacity-0',
+            ]}
+            onerror="this.style.display='none'"
+          />
+        ))}
+      </div>
+    )}
+  </div>
+
+  <!-- 오버레이: 밝은 이미지 위에서도 텍스트 대비를 확보하기 위한 어두운 반투명 레이어다. -->
+  {overlay && <div class="absolute inset-0 bg-black/50"></div>}
+
+  <!-- 콘텐츠 영역: 모바일은 중앙 정렬, lg 이상에서는 좌측 정렬로 나뉘는 핵심 반응형 클래스다. -->
+  <div
+    class="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col items-center justify-center px-5 py-24 text-center md:px-6 lg:items-start lg:px-8 lg:text-left"
+  >
+    <div class="max-w-2xl">
+      {subtitle && (
+        <p class="mb-4 text-sm font-semibold tracking-[0.2em] text-amber-300">
+          {subtitle}
+        </p>
+      )}
+
+      <!-- 가독성 보정: config의 title에 든 \n 줄바꿈이 실제 화면에도 반영되도록 whitespace-pre-line을 추가했다. -->
+      <!-- 이게 없으면 \n이 공백으로 뭉개져서, 뷰포트 너비에 따라 줄바꿈 위치가 매번 다르게(제어 불가능하게) 잡혔다. -->
+      <h1 class="whitespace-pre-line break-keep text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+        {title}
+      </h1>
+
+      {description && (
+        <p class="mt-5 break-keep text-base text-neutral-200 sm:text-lg">
+          {description}
+        </p>
+      )}
+
+      <!-- buttons 배열을 반복 렌더링하는 부분: 모바일은 세로/w-full, sm 이상에서 가로 배치로 바뀐다. -->
+      <div class="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:justify-center lg:justify-start">
+        {buttons.map((button) => (
+          <a
+            href={`#${button.target}`}
+            class:list={[
+              'w-full rounded-lg px-6 py-3.5 text-center text-base font-semibold transition sm:w-auto',
+              // primary/secondary 스타일을 나누는 부분: primary는 강조 배경, 그 외(secondary)는 outline 버튼이다.
+              button.style === 'primary'
+                ? 'bg-amber-400 text-neutral-950 hover:bg-amber-300'
+                : 'border border-white/70 text-white hover:bg-white/10',
+            ]}
+          >
+            {button.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // media가 2장 이상일 때만 존재하는 슬라이더 컨테이너를 찾아 opacity 클래스를 자동으로 토글한다.
+  // 라이브러리 없이 최소한의 vanilla JS로 구현한 자동 전환이다.
+  document.querySelectorAll<HTMLDivElement>('[data-hero-slider]').forEach((slider) => {
+    const slides = slider.querySelectorAll<HTMLImageElement>('[data-hero-slide]');
+    const intervalMs = Number(slider.dataset.heroSlider) || 5000;
+    let activeIndex = 0;
+
+    if (slides.length < 2) return;
+
+    setInterval(() => {
+      slides[activeIndex].classList.replace('opacity-100', 'opacity-0');
+      activeIndex = (activeIndex + 1) % slides.length;
+      slides[activeIndex].classList.replace('opacity-0', 'opacity-100');
+    }, intervalMs);
+  });
+</script>
+
+<!--
+  확장 포인트: 나중에 sectionRegistry가 만들어지면 이 컴포넌트를 type: "HeroMedia01" 키로 등록해
+  config의 hero.type 값만으로 동적으로 불러올 수 있다. 지금은 index.astro에서 직접 import해서 쓴다.
+
+  확장 포인트: About/Portfolio/BeforeAfter/Gallery 등 앞으로 만들 섹션도 이미지를 다룰 때는
+  여기서 쓴 것과 동일한 mediaDisplay.ts의 normalizeMediaItem/normalizeMediaList + getObjectFitClass/
+  getObjectPositionClass 패턴을 그대로 재사용해야 한다. 섹션마다 다르게 구현하면 100개 규모로
+  늘어났을 때 이미지 처리 방식이 제각각이 되어 유지보수가 어려워진다.
+-->

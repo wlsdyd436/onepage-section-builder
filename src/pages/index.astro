@@ -1,17 +1,134 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header01 from '../components/layout/Header01.astro';
+import HeroMedia01 from '../components/sections/hero/HeroMedia01.astro';
 
+// [1] 고객별 JSON config를 import하는 부분이다.
+// 나중에는 clientId를 기준으로 동적으로 불러오게 되지만, 지금은 샘플 파일 하나를 고정으로 연결한다.
+import clientConfig from '../data/clients/interior-sample.json';
+
+// [2] site / header / hero / sections 데이터를 분리하는 부분이다.
+// config 전체를 그대로 쓰지 않고, 화면에서 쓰기 편하게 각 영역별로 꺼내둔다.
+const { site, header, hero, sections } = clientConfig;
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="원페이지 섹션 빌더"
+  description="섹션을 조립해서 원페이지 홈페이지를 제작하는 시스템"
+>
+  <!-- 11단계: 실제 Header01 컴포넌트를 페이지 최상단에 배치한다. -->
+  <Header01
+    logo={header.logo}
+    logoText={header.logoText}
+    sticky={header.sticky}
+    navItems={header.navItems}
+    cta={header.cta}
+  />
+
+  <!-- 12단계: Header01 바로 아래에 실제 HeroMedia01 첫 화면을 배치한다. -->
+  <HeroMedia01
+    id={hero.id}
+    type={hero.type}
+    mediaType={hero.mediaType}
+    title={hero.title}
+    subtitle={hero.subtitle}
+    description={hero.description}
+    media={hero.media}
+    buttons={hero.buttons}
+    overlay={hero.overlay}
+    autoplaySpeed={hero.autoplaySpeed}
+  />
+
+  <main class="min-h-screen bg-neutral-950 text-white">
+    <section class="flex min-h-screen items-center justify-center px-6 text-center">
+      <div>
+        <!-- 첫 테스트 문구다. Tailwind 적용 여부를 확인하는 용도다. -->
+        <p class="mb-4 text-sm font-semibold tracking-[0.3em] text-amber-300">
+          ONEPAGE SECTION BUILDER
+        </p>
+
+        <h1 class="text-4xl font-bold md:text-6xl">
+          원페이지 제작 시스템 시작
+        </h1>
+
+        <p class="mt-6 text-lg text-neutral-300">
+          Header와 Hero 모듈을 하나씩 붙여갈 준비가 완료되었습니다.
+        </p>
+      </div>
+    </section>
+
+    <!-- CONFIG TEST: 10단계 - JSON config가 정상적으로 연결되는지만 확인하는 임시 테스트 영역이다. -->
+    <!-- Header01, HeroMedia01 컴포넌트가 만들어지면 이 영역은 걷어낼 예정이다. -->
+    <section class="min-h-screen bg-neutral-900 px-6 py-16">
+      <div class="mx-auto max-w-3xl">
+        <p class="mb-10 text-center text-sm font-semibold tracking-[0.3em] text-emerald-400">
+          CONFIG TEST
+        </p>
+
+        <!-- 업체명 / 업체 설명 테스트 -->
+        <div class="mb-8 rounded-xl border border-neutral-700 bg-neutral-800 p-6 text-center">
+          <h2 class="text-2xl font-bold md:text-3xl">{site.businessName}</h2>
+          <p class="mt-3 text-neutral-300">{site.description}</p>
+        </div>
+
+        <!-- Hero 문구 테스트: title / subtitle / description 출력 -->
+        <div class="mb-8 rounded-xl border border-neutral-700 bg-neutral-800 p-6">
+          <p class="mb-2 text-xs font-semibold tracking-widest text-amber-300">HERO 문구 테스트</p>
+          <h3 class="whitespace-pre-line text-xl font-bold">{hero.title}</h3>
+          <p class="mt-2 text-neutral-300">{hero.subtitle}</p>
+          <p class="mt-1 text-sm text-neutral-400">{hero.description}</p>
+          <!-- hero.media는 /clients/{clientId}/... 형태의 public 폴더 경로 문자열이다. -->
+          <!-- 지금은 실제 이미지 파일이 없어도 되고, 나중에 public/clients/interior-sample/ 안에 파일을 넣으면 그대로 연결된다. -->
+          <p class="mt-3 text-xs text-neutral-500">media 경로: {hero.media}</p>
+        </div>
+
+        <!-- Header 메뉴 테스트: header.navItems를 반복 출력하는 부분 -->
+        <div class="mb-8 rounded-xl border border-neutral-700 bg-neutral-800 p-6">
+          <p class="mb-4 text-xs font-semibold tracking-widest text-amber-300">HEADER 메뉴 테스트</p>
+          <div class="flex flex-wrap justify-center gap-3">
+            {header.navItems.map((item) => (
+              <a
+                href={`#${item.target}`}
+                class="rounded-full border border-neutral-600 px-4 py-2 text-sm text-neutral-200 hover:border-emerald-400 hover:text-emerald-300"
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <!-- Hero 버튼 테스트: hero.buttons를 반복 출력하는 부분 -->
+        <div class="mb-8 rounded-xl border border-neutral-700 bg-neutral-800 p-6">
+          <p class="mb-4 text-xs font-semibold tracking-widest text-amber-300">HERO 버튼 테스트</p>
+          <div class="flex flex-wrap justify-center gap-3">
+            {hero.buttons.map((btn) => (
+              <a
+                href={`#${btn.target}`}
+                class={
+                  btn.style === 'primary'
+                    ? 'rounded-lg bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-neutral-950'
+                    : 'rounded-lg border border-neutral-500 px-5 py-2.5 text-sm font-semibold text-neutral-200'
+                }
+              >
+                {btn.label}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <!-- 선택된 섹션 테스트: sections를 반복 출력하는 부분 -->
+        <!-- sections는 배열이 아니라 객체이므로 Object.values로 배열화한 뒤 반복한다. -->
+        <div class="rounded-xl border border-neutral-700 bg-neutral-800 p-6 text-center">
+          <p class="mb-4 text-xs font-semibold tracking-widest text-amber-300">선택된 섹션 테스트</p>
+          <div class="flex flex-wrap justify-center gap-3">
+            {Object.values(sections).map((sec) => (
+              <span class="rounded-full bg-neutral-700 px-4 py-2 text-sm text-neutral-100">
+                {sec.title} {sec.enabled ? '✓' : '✗'}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

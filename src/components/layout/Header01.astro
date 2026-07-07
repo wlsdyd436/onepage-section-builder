@@ -1,0 +1,126 @@
+---
+// [1] Astro.props에서 header config 데이터를 받는 부분이다.
+// index.astro에서 clientConfig.header의 각 필드를 그대로 넘겨준다.
+interface NavItem {
+  label: string;
+  target: string;
+}
+
+interface Cta {
+  label: string;
+  target: string;
+}
+
+interface Props {
+  logo?: string;
+  logoText: string;
+  sticky: boolean;
+  navItems: NavItem[];
+  cta: Cta;
+}
+
+const { logo, logoText, sticky, navItems, cta } = Astro.props;
+---
+
+<!-- [6] sticky 여부에 따라 헤더를 화면 상단에 고정할지 결정하는 핵심 분기다. -->
+<header
+  class:list={[
+    'w-full border-b border-neutral-800 bg-neutral-950/90 backdrop-blur',
+    { 'sticky top-0 z-50': sticky },
+  ]}
+>
+  <div class="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 lg:h-[72px] lg:px-8">
+    <!-- [2] 로고 처리: logoText는 항상 표시하고, logo 이미지가 있을 때만 함께 보여준다. -->
+    <!-- 이미지 경로가 없거나(public에 파일이 없어 404가 나도) onerror로 img만 숨겨서 레이아웃이 깨지지 않게 한다. -->
+    <a href="#" class="flex min-w-0 items-center gap-2">
+      {logo && (
+        <img
+          src={logo}
+          alt={logoText}
+          class="h-8 w-auto shrink-0"
+          onerror="this.style.display='none'"
+        />
+      )}
+      <span class="truncate text-base font-bold tracking-wide text-white lg:text-lg">
+        {logoText}
+      </span>
+    </a>
+
+    <!-- [6] PC 전용 메뉴: lg 미만에서는 숨기고(hidden), lg 이상에서만 가로로 보여준다(lg:flex). -->
+    <nav class="hidden items-center gap-8 lg:flex">
+      <!-- [3] navItems를 반복 렌더링하는 부분이다. target 값 앞에 #을 붙여 href를 만든다. -->
+      {navItems.map((item) => (
+        <a
+          href={`#${item.target}`}
+          class="text-sm font-medium text-neutral-200 transition-colors hover:text-amber-300"
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <!-- [5] PC CTA 버튼: 눈에 띄는 강조 색상으로 렌더링한다. -->
+    <a
+      href={`#${cta.target}`}
+      class="hidden rounded-full bg-amber-400 px-5 py-2.5 text-sm font-semibold text-neutral-950 transition hover:bg-amber-300 lg:inline-flex lg:items-center"
+    >
+      {cta.label}
+    </a>
+
+    <!-- [4] 모바일 햄버거 버튼: lg 미만에서만 보이고(lg:hidden), 터치 영역을 44px(h-11 w-11)로 확보한다. -->
+    <button
+      type="button"
+      data-header01-toggle
+      aria-expanded="false"
+      aria-controls="header01-mobile-menu"
+      aria-label="메뉴 열기"
+      class="flex h-11 w-11 items-center justify-center rounded-lg text-2xl leading-none text-white lg:hidden"
+    >
+      ☰
+    </button>
+  </div>
+
+  <!-- [4] 모바일 드롭다운 메뉴: 기본 상태는 hidden이며, 버튼 클릭 시 스크립트로 토글된다. -->
+  <div
+    id="header01-mobile-menu"
+    data-header01-menu
+    class="hidden w-full border-t border-neutral-800 bg-neutral-950/95 lg:hidden"
+  >
+    <nav class="flex flex-col gap-1 px-4 py-4">
+      {navItems.map((item) => (
+        <a
+          href={`#${item.target}`}
+          class="rounded-lg px-3 py-3 text-base text-neutral-200 hover:bg-neutral-800"
+        >
+          {item.label}
+        </a>
+      ))}
+
+      <!-- [5] 모바일 메뉴 안의 CTA 버튼이다. -->
+      <!-- [7] 확장 포인트: 나중에 StickyMobileCTA01을 만들면 여기서 쓰는 cta({label, target})를 그대로 재사용해서 화면 하단 고정 버튼으로 노출할 수 있다. -->
+      <a
+        href={`#${cta.target}`}
+        class="mt-2 rounded-lg bg-amber-400 px-3 py-3 text-center text-base font-semibold text-neutral-950"
+      >
+        {cta.label}
+      </a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  // [4] 모바일 햄버거 버튼 클릭 시 드롭다운 메뉴를 열고 닫는 스크립트다.
+  // hidden 클래스 토글 + aria-expanded 갱신 + 아이콘(☰/✕) 전환만 담당하는 최소 구현이다.
+  const toggleButton = document.querySelector<HTMLButtonElement>('[data-header01-toggle]');
+  const mobileMenu = document.querySelector<HTMLDivElement>('[data-header01-menu]');
+
+  toggleButton?.addEventListener('click', () => {
+    if (!mobileMenu) return;
+
+    const willOpen = mobileMenu.classList.contains('hidden');
+    mobileMenu.classList.toggle('hidden');
+
+    toggleButton.setAttribute('aria-expanded', String(willOpen));
+    toggleButton.textContent = willOpen ? '✕' : '☰';
+  });
+</script>
