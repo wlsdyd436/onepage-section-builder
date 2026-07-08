@@ -1,0 +1,55 @@
+---
+// [StickyMobileCTA01] 모바일 사용자가 스크롤 위치와 상관없이 언제든 전화하거나 상담을
+// 신청할 수 있게 화면 하단에 고정되는 전환율 강화용 CTA 바다.
+// PC에서는 Header01의 CTA 버튼이 이미 항상 보이므로, 이 컴포넌트는 모바일 전용으로만 노출한다.
+interface Props {
+  phone?: string;
+  primaryLabel?: string;
+  primaryTarget?: string;
+}
+
+const { phone, primaryLabel = '상담 신청', primaryTarget = 'contact' } = Astro.props;
+---
+
+<!--
+  Header01과 동일하게 lg 브레이크포인트를 기준으로 모바일/PC를 나눈다(Header01의 PC 메뉴도
+  lg:flex, 햄버거도 lg:hidden 기준). lg 이상(PC)에서는 Header CTA가 항상 보이므로
+  StickyMobileCTA01은 lg:hidden으로 숨긴다.
+
+  z-40으로 Header01의 sticky 헤더(z-50)보다 낮게 둬서, 모바일 메뉴가 열렸을 때 메뉴가
+  이 하단 바보다 항상 위에 보이도록 한다(서로 다른 화면 영역이라 평소엔 겹치지 않지만,
+  화면이 짧은 기기에서 메뉴가 늘어나는 경우를 대비한 안전장치다).
+
+  width: 100vw 대신 inset-x-0 + w-full만 사용한다. 100vw는 스크롤바 두께를 포함해 계산되는
+  브라우저가 있어 가로 스크롤이 생길 수 있지만, inset-x-0/w-full은 실제 뷰포트 폭에 맞춰지므로
+  이 문제가 없다.
+
+  pb-[env(safe-area-inset-bottom)]는 iPhone 등 하단 홈 인디케이터가 있는 기기에서 버튼이
+  그 영역에 바로 붙어 눌리지 않게(또는 잘리지 않게) 여백을 확보하기 위한 처리다.
+-->
+<div
+  class="fixed inset-x-0 bottom-0 z-40 w-full border-t border-neutral-800 bg-neutral-950/95 backdrop-blur pb-[env(safe-area-inset-bottom)] lg:hidden"
+>
+  <div class="mx-auto flex w-full max-w-7xl items-stretch gap-2 px-3 py-2">
+    <!-- 전화 버튼은 tel: 링크로 연결해 탭하면 바로 전화 앱이 열리게 한다. -->
+    {phone && (
+      <a
+        href={`tel:${phone}`}
+        aria-label={`전화 걸기: ${phone}`}
+        class="flex h-12 flex-1 items-center justify-center truncate rounded-lg border border-neutral-600 px-3 text-sm font-semibold text-neutral-100"
+      >
+        전화하기
+      </a>
+    )}
+
+    <!-- 상담 신청 버튼은 지금은 #contact로만 연결해두고, 다음 단계에서 ContactCTA01 섹션이 -->
+    <!-- id="contact"로 만들어지면 자연스럽게 그 위치로 스크롤된다. -->
+    <a
+      href={`#${primaryTarget}`}
+      aria-label={primaryLabel}
+      class="flex h-12 flex-1 items-center justify-center truncate rounded-lg bg-amber-400 px-3 text-sm font-semibold text-neutral-950"
+    >
+      {primaryLabel}
+    </a>
+  </div>
+</div>
