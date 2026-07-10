@@ -2,6 +2,7 @@ import HeroMedia01 from '../components/sections/hero/HeroMedia01.astro';
 import PortfolioGrid01 from '../components/sections/portfolio/PortfolioGrid01.astro';
 import BeforeAfter01 from '../components/sections/before-after/BeforeAfter01.astro';
 import Review01 from '../components/sections/review/Review01.astro';
+import ProcessSteps01 from '../components/sections/process/ProcessSteps01.astro';
 import ContactCTA01 from '../components/sections/contact/ContactCTA01.astro';
 import clientConfig from '../data/clients/interior-sample.json';
 
@@ -26,7 +27,7 @@ export interface SectionRegistryEntry {
   showInShowroom?: boolean;
 }
 
-const { site, hero, portfolio, beforeAfter, reviews } = clientConfig;
+const { site, hero, portfolio, beforeAfter, reviews, process: processSteps } = clientConfig;
 
 export const sectionRegistry: SectionRegistryEntry[] = [
   {
@@ -93,6 +94,21 @@ export const sectionRegistry: SectionRegistryEntry[] = [
       title: reviews.title,
       description: reviews.description,
       items: reviews.items,
+    },
+    showInShowroom: true,
+  },
+  {
+    id: 'ProcessSteps01',
+    name: 'ProcessSteps01 - 진행 절차 카드',
+    category: 'Process',
+    description: '상담부터 시공 완료까지의 흐름을 단계별로 안내하는 섹션.',
+    status: 'ready',
+    component: ProcessSteps01,
+    previewProps: {
+      eyebrow: processSteps.eyebrow,
+      title: processSteps.title,
+      description: processSteps.description,
+      items: processSteps.items,
     },
     showInShowroom: true,
   },

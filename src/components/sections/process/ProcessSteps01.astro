@@ -1,0 +1,77 @@
+---
+// [ProcessSteps01] 상담부터 시공 완료까지의 흐름을 단계별 카드로 보여주는 설명/신뢰 섹션이다.
+// PortfolioGrid01(시공 사례) / BeforeAfter01(전후 비교) / Review01(고객 후기) 다음,
+// ContactCTA01(상담 문의) 이전에 배치되어 "문의하면 이후에 어떻게 진행되는지" 미리
+// 이해시켜 상담 진입 장벽을 낮춘다.
+//
+// 이번 MVP는 안정적인 카드형 절차 UI까지만 다룬다. timeline animation/scroll animation/
+// carousel/modal은 만들지 않는다. 단계 번호는 아이콘 라이브러리 없이 01, 02 형태의
+// 텍스트로만 표시하고, 카드 사이 연결선 같은 복잡한 timeline도 만들지 않는다.
+//
+// 19단계 Review01에서 "공백 없는 긴 텍스트가 break-keep만으로는 카드 밖으로 밀려나는"
+// overflow 문제를 발견했었다. ProcessSteps01은 그 교훈을 그대로 반영해 title/description/
+// duration/note 모두 처음부터 break-keep + break-words를 함께 적용한다.
+export interface ProcessStepItem {
+  step: number;
+  title: string;
+  description?: string;
+  duration?: string;
+  note?: string;
+}
+
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  items?: ProcessStepItem[];
+}
+
+const {
+  id = 'process',
+  eyebrow = '진행 절차',
+  title = '상담부터 시공 완료까지, 이렇게 진행됩니다',
+  description = '문의 이후의 과정을 단계별로 안내해드립니다.',
+  items = [],
+} = Astro.props;
+
+// step 번호를 01, 02 형태의 2자리 문자열로 맞춰준다.
+function formatStepNumber(step: number) {
+  return String(step).padStart(2, '0');
+}
+---
+
+<section id={id} class="w-full bg-neutral-900 px-5 py-20 text-white md:px-6 lg:px-8">
+  <div class="mx-auto max-w-3xl text-center">
+    <p class="text-sm font-semibold tracking-[0.2em] text-amber-300">{eyebrow}</p>
+    <h2 class="mt-4 break-keep break-words text-3xl font-bold sm:text-4xl">{title}</h2>
+    <p class="mt-4 break-keep break-words text-neutral-300">{description}</p>
+  </div>
+
+  <!-- 반응형 열 수: 모바일 1열, md(768px, 태블릿) 2열, lg(1024px, PC) 3열. -->
+  <!-- min-w-0으로 grid 트랙 안에서 카드가 내용 때문에 트랙보다 넓어지지 않게 막는다. -->
+  <div class="mx-auto mt-12 grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    {items.map((item) => (
+      <article class="flex min-w-0 flex-col gap-3 rounded-xl border border-neutral-700 bg-neutral-800 p-6">
+        <span class="text-2xl font-bold text-amber-300">{formatStepNumber(item.step)}</span>
+
+        <h3 class="break-keep break-words text-lg font-bold">{item.title}</h3>
+
+        {item.description && (
+          <p class="break-keep break-words text-sm leading-relaxed text-neutral-300">
+            {item.description}
+          </p>
+        )}
+
+        {(item.duration || item.note) && (
+          <div class="mt-auto flex flex-col gap-1 border-t border-neutral-700 pt-4 text-xs text-neutral-400">
+            {item.duration && (
+              <span class="break-keep break-words">소요 기간: {item.duration}</span>
+            )}
+            {item.note && <span class="break-keep break-words">{item.note}</span>}
+          </div>
+        )}
+      </article>
+    ))}
+  </div>
+</section>

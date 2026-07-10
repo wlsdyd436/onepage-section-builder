@@ -10,6 +10,8 @@ import BeforeAfter01 from '../components/sections/before-after/BeforeAfter01.ast
 import type { BeforeAfterItem } from '../components/sections/before-after/BeforeAfter01.astro';
 import Review01 from '../components/sections/review/Review01.astro';
 import type { ReviewItem } from '../components/sections/review/Review01.astro';
+import ProcessSteps01 from '../components/sections/process/ProcessSteps01.astro';
+import type { ProcessStepItem } from '../components/sections/process/ProcessSteps01.astro';
 
 // [1] 고객별 JSON config를 import하는 부분이다.
 // 나중에는 clientId를 기준으로 동적으로 불러오게 되지만, 지금은 샘플 파일 하나를 고정으로 연결한다.
@@ -17,7 +19,7 @@ import clientConfig from '../data/clients/interior-sample.json';
 
 // [2] site / header / hero / sections 데이터를 분리하는 부분이다.
 // config 전체를 그대로 쓰지 않고, 화면에서 쓰기 편하게 각 영역별로 꺼내둔다.
-const { site, header, hero, portfolio, beforeAfter, reviews, sections } = clientConfig;
+const { site, header, hero, portfolio, beforeAfter, reviews, process, sections } = clientConfig;
 ---
 
 <BaseLayout
@@ -166,6 +168,16 @@ const { site, header, hero, portfolio, beforeAfter, reviews, sections } = client
       title={reviews.title}
       description={reviews.description}
       items={reviews.items as ReviewItem[]}
+    />
+
+    <!-- 20단계: 고객 후기(Review01) 다음, 상담 문의(ContactCTA01) 이전에 배치해 -->
+    <!-- "문의하면 이후에 어떻게 진행되는지" 미리 보여줘 상담 진입 장벽을 낮춘다. -->
+    <!-- Header nav의 target="process"(#process)가 실제로 도착하는 목적지이기도 하다. -->
+    <ProcessSteps01
+      eyebrow={process.eyebrow}
+      title={process.title}
+      description={process.description}
+      items={process.items as ProcessStepItem[]}
     />
 
     <!-- 15단계: Header CTA / Hero 버튼 / StickyMobileCTA01의 #contact 링크가 실제로 도착하는 목적지다. -->
