@@ -14,6 +14,8 @@ import ProcessSteps01 from '../components/sections/process/ProcessSteps01.astro'
 import type { ProcessStepItem } from '../components/sections/process/ProcessSteps01.astro';
 import FAQ01 from '../components/sections/faq/FAQ01.astro';
 import type { FAQItem } from '../components/sections/faq/FAQ01.astro';
+import ServiceCards01 from '../components/sections/service/ServiceCards01.astro';
+import type { ServiceItem } from '../components/sections/service/ServiceCards01.astro';
 
 // [1] 고객별 JSON config를 import하는 부분이다.
 // 나중에는 clientId를 기준으로 동적으로 불러오게 되지만, 지금은 샘플 파일 하나를 고정으로 연결한다.
@@ -21,7 +23,7 @@ import clientConfig from '../data/clients/interior-sample.json';
 
 // [2] site / header / hero / sections 데이터를 분리하는 부분이다.
 // config 전체를 그대로 쓰지 않고, 화면에서 쓰기 편하게 각 영역별로 꺼내둔다.
-const { site, header, hero, portfolio, beforeAfter, reviews, process, faq, sections } = clientConfig;
+const { site, header, hero, portfolio, beforeAfter, reviews, process, faq, services, sections } = clientConfig;
 ---
 
 <BaseLayout
@@ -189,6 +191,15 @@ const { site, header, hero, portfolio, beforeAfter, reviews, process, faq, secti
       title={faq.title}
       description={faq.description}
       items={faq.items as FAQItem[]}
+    />
+
+    <!-- 22단계: 자주 묻는 질문(FAQ01) 다음, 상담 문의(ContactCTA01) 이전에 배치해 -->
+    <!-- 문의 직전에 제공 가능한 서비스 범위를 다시 한번 정리해 보여준다. -->
+    <ServiceCards01
+      eyebrow={services.eyebrow}
+      title={services.title}
+      description={services.description}
+      items={services.items as ServiceItem[]}
     />
 
     <!-- 15단계: Header CTA / Hero 버튼 / StickyMobileCTA01의 #contact 링크가 실제로 도착하는 목적지다. -->

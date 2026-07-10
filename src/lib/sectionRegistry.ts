@@ -4,6 +4,7 @@ import BeforeAfter01 from '../components/sections/before-after/BeforeAfter01.ast
 import Review01 from '../components/sections/review/Review01.astro';
 import ProcessSteps01 from '../components/sections/process/ProcessSteps01.astro';
 import FAQ01 from '../components/sections/faq/FAQ01.astro';
+import ServiceCards01 from '../components/sections/service/ServiceCards01.astro';
 import ContactCTA01 from '../components/sections/contact/ContactCTA01.astro';
 import clientConfig from '../data/clients/interior-sample.json';
 
@@ -28,7 +29,7 @@ export interface SectionRegistryEntry {
   showInShowroom?: boolean;
 }
 
-const { site, hero, portfolio, beforeAfter, reviews, process: processSteps, faq } = clientConfig;
+const { site, hero, portfolio, beforeAfter, reviews, process: processSteps, faq, services } = clientConfig;
 
 export const sectionRegistry: SectionRegistryEntry[] = [
   {
@@ -125,6 +126,21 @@ export const sectionRegistry: SectionRegistryEntry[] = [
       title: faq.title,
       description: faq.description,
       items: faq.items,
+    },
+    showInShowroom: true,
+  },
+  {
+    id: 'ServiceCards01',
+    name: 'ServiceCards01 - 서비스 소개 카드',
+    category: 'Services',
+    description: '제공 가능한 인테리어 서비스 범위를 카드 형태로 보여주는 섹션.',
+    status: 'ready',
+    component: ServiceCards01,
+    previewProps: {
+      eyebrow: services.eyebrow,
+      title: services.title,
+      description: services.description,
+      items: services.items,
     },
     showInShowroom: true,
   },
