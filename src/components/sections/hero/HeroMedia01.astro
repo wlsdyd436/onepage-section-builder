@@ -48,7 +48,10 @@ const {
 const resolvedMedia = normalizeMediaList(media, { defaultFit: 'cover', defaultPosition: 'center' });
 ---
 
-<section id={id} class="relative w-full min-h-[100svh] overflow-hidden bg-neutral-900">
+<!-- min-h-screen(100vh)을 min-h-[100svh]보다 먼저 둔다: svh를 지원하지 않는 구형 브라우저/인앱 -->
+<!-- 웹뷰에서는 min-h-[100svh] 선언 자체가 무시되므로, min-h-screen이 최소 높이 기준으로 남는다. -->
+<!-- svh를 지원하는 브라우저에서는 뒤에 오는 min-h-[100svh]가 그대로 적용된다. -->
+<section id={id} class="relative w-full min-h-screen min-h-[100svh] overflow-hidden bg-neutral-900">
   <!-- 배경 레이어: 항상 fallback 배경색을 먼저 깔아서 이미지가 없거나 깨져도 섹션 자체는 무너지지 않게 한다. -->
   <div class="absolute inset-0 bg-neutral-800">
     <!-- [resolvedMedia 배열 개수로 표시 방식을 결정하는 부분] -->
@@ -97,8 +100,9 @@ const resolvedMedia = normalizeMediaList(media, { defaultFit: 'cover', defaultPo
   {overlay && <div class="absolute inset-0 bg-black/50"></div>}
 
   <!-- 콘텐츠 영역: 모바일은 중앙 정렬, lg 이상에서는 좌측 정렬로 나뉘는 핵심 반응형 클래스다. -->
+  <!-- 위 section과 동일한 이유로 min-h-screen을 min-h-[100svh]보다 먼저 둔다(svh 미지원 브라우저 fallback). -->
   <div
-    class="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col items-center justify-center px-5 py-24 text-center md:px-6 lg:items-start lg:px-8 lg:text-left"
+    class="relative z-10 mx-auto flex min-h-screen min-h-[100svh] w-full max-w-7xl flex-col items-center justify-center px-5 py-24 text-center md:px-6 lg:items-start lg:px-8 lg:text-left"
   >
     <div class="max-w-2xl">
       {subtitle && (

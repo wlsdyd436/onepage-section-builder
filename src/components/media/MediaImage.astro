@@ -74,6 +74,9 @@ const aspectRatioPreset = resolved?.aspectRatio ?? defaultAspectRatio;
     wrapperClass,
   ]}
 >
+  <!-- 빌드 시점에는 파일이 있었더라도 런타임에 네트워크 문제 등으로 로드가 실패할 수 있다. -->
+  <!-- onerror로 깨진 이미지 아이콘 대신 img를 숨기고 wrapper의 fallback 배경색만 보이게 한다 -->
+  <!-- (HeroMedia01/Header01과 동일한 안전장치). -->
   {resolved && (
     <img
       src={resolved.src}
@@ -85,6 +88,7 @@ const aspectRatioPreset = resolved?.aspectRatio ?? defaultAspectRatio;
         getObjectPositionClass(resolved),
         imageClass,
       ]}
+      onerror="this.style.display='none'"
     />
   )}
 </div>
