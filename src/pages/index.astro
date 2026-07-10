@@ -1,31 +1,43 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Header01 from '../components/layout/Header01.astro';
-import HeroMedia01 from '../components/sections/hero/HeroMedia01.astro';
-import StickyMobileCTA01 from '../components/layout/StickyMobileCTA01.astro';
-import ContactCTA01 from '../components/sections/contact/ContactCTA01.astro';
-import PortfolioGrid01 from '../components/sections/portfolio/PortfolioGrid01.astro';
-import type { PortfolioItem } from '../components/sections/portfolio/PortfolioGrid01.astro';
-import BeforeAfter01 from '../components/sections/before-after/BeforeAfter01.astro';
-import type { BeforeAfterItem } from '../components/sections/before-after/BeforeAfter01.astro';
-import Review01 from '../components/sections/review/Review01.astro';
-import type { ReviewItem } from '../components/sections/review/Review01.astro';
-import ProcessSteps01 from '../components/sections/process/ProcessSteps01.astro';
-import type { ProcessStepItem } from '../components/sections/process/ProcessSteps01.astro';
-import FAQ01 from '../components/sections/faq/FAQ01.astro';
-import type { FAQItem } from '../components/sections/faq/FAQ01.astro';
-import ServiceCards01 from '../components/sections/service/ServiceCards01.astro';
-import type { ServiceItem } from '../components/sections/service/ServiceCards01.astro';
-import Footer01 from '../components/layout/Footer01.astro';
-import type { FooterNavItem } from '../components/layout/Footer01.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header01 from "../components/layout/Header01.astro";
+import HeroMedia01 from "../components/sections/hero/HeroMedia01.astro";
+import type { HeroButton } from "../types/hero";
+import StickyMobileCTA01 from "../components/layout/StickyMobileCTA01.astro";
+import ContactCTA01 from "../components/sections/contact/ContactCTA01.astro";
+import PortfolioGrid01 from "../components/sections/portfolio/PortfolioGrid01.astro";
+import type { PortfolioItem } from "../components/sections/portfolio/PortfolioGrid01.astro";
+import BeforeAfter01 from "../components/sections/before-after/BeforeAfter01.astro";
+import type { BeforeAfterItem } from "../components/sections/before-after/BeforeAfter01.astro";
+import Review01 from "../components/sections/review/Review01.astro";
+import type { ReviewItem } from "../components/sections/review/Review01.astro";
+import ProcessSteps01 from "../components/sections/process/ProcessSteps01.astro";
+import type { ProcessStepItem } from "../components/sections/process/ProcessSteps01.astro";
+import FAQ01 from "../components/sections/faq/FAQ01.astro";
+import type { FAQItem } from "../components/sections/faq/FAQ01.astro";
+import ServiceCards01 from "../components/sections/service/ServiceCards01.astro";
+import type { ServiceItem } from "../components/sections/service/ServiceCards01.astro";
+import Footer01 from "../components/layout/Footer01.astro";
+import type { FooterNavItem } from "../components/layout/Footer01.astro";
 
 // [1] 고객별 JSON config를 import하는 부분이다.
 // 나중에는 clientId를 기준으로 동적으로 불러오게 되지만, 지금은 샘플 파일 하나를 고정으로 연결한다.
-import clientConfig from '../data/clients/interior-sample.json';
+import clientConfig from "../data/clients/interior-sample.json";
 
 // [2] site / header / hero / 각 섹션 데이터를 분리한다.
 // config 전체를 그대로 쓰지 않고, 화면에서 쓰기 편하게 각 영역별로 꺼내둔다.
-const { site, header, hero, portfolio, beforeAfter, reviews, process, faq, services, footer } = clientConfig;
+const {
+  site,
+  header,
+  hero,
+  portfolio,
+  beforeAfter,
+  reviews,
+  process,
+  faq,
+  services,
+  footer,
+} = clientConfig;
 ---
 
 <BaseLayout
@@ -50,7 +62,7 @@ const { site, header, hero, portfolio, beforeAfter, reviews, process, faq, servi
     subtitle={hero.subtitle}
     description={hero.description}
     media={hero.media}
-    buttons={hero.buttons}
+    buttons={hero.buttons as HeroButton[]}
     overlay={hero.overlay}
     autoplaySpeed={hero.autoplaySpeed}
   />
