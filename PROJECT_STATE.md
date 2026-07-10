@@ -70,12 +70,26 @@ StickyMobileCTA01
 - 실제 고객 자료 수집 양식/프로세스 필요
 - 가격/상품화 문서는 아직 별도 필요
 
-## 다음 예정
-- 1차 데모 QA 또는 FinalCTA01 variant 검토
-- 이후 section variants 확장
-- 이후 README/납품 문서 정리
-- 이후 실제 이미지 적용 테스트
+## 최근 QA
+- 1차 데모 종합 QA 수행(24단계)
+- / 및 /showroom 5개 viewport(375/390/430/768/1280) 점검, 전 구간 가로 스크롤 없음
+- anchor(#portfolio~#footer) / tel / kakao / sticky / footer / showroom 회귀 점검, 이상 없음
+- 8개 섹션 텍스트에 공백 없는 긴 한글 텍스트 동시 주입 스트레스 테스트 통과
+- npx astro build 통과, console error / failed request / 404 없음
+- 로고/히어로 이미지는 실제 파일로 정상 로드, Portfolio/BeforeAfter는 여전히 fallback 상태(예상된 동작)
+
+## 현재 1차 데모 상태
+- 데모 페이지 기본 흐름 완성(Header~Footer~StickyMobileCTA 전체 라인업)
+- 섹션 전시장(`/showroom`) MVP 정상 작동(11개 등록, 9개 preview)
+- 실제 이미지 투입 전 fallback 기준 안정화 완료
+
+## 다음 후보
+- 실제 이미지(Portfolio/BeforeAfter) 적용 및 crop/fit 재검증
+- README 1차 작성
+- 납품/고객자료 수집 체크리스트 작성
+- FinalCTA01 variant 필요성 검토
+- 고객별 sections config/preset 구조 검토
 
 ## 마지막 업데이트
 - 날짜: 2026-07-10
-- 작업: Footer01 추가(사이트 하단 마감 섹션), sectionRegistry/showroom 등록, index 데모 적용
+- 작업: 1차 데모 종합 QA(24단계) 수행 및 결과 기록
