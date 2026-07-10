@@ -85,11 +85,10 @@ StickyMobileCTA01
 
 ## 다음 후보
 - 실제 이미지(Portfolio/BeforeAfter) 적용 및 crop/fit 재검증
-- README 1차 작성
 - 납품/고객자료 수집 체크리스트 작성
 - FinalCTA01 variant 필요성 검토
 - 고객별 sections config/preset 구조 검토
 
 ## 마지막 업데이트
 - 날짜: 2026-07-10
-- 작업: 1차 데모 종합 QA(24단계) 수행 및 결과 기록
+- 작업: README v1 작성 완료(프로젝트 개요/페이지 구조/실행법/폴더 구조/섹션 목록/새 섹션 추가 흐름/설계 원칙/하지 않는 것 정리), PROJECT_STATE.md와 정합성 확인
