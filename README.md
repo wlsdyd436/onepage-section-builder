@@ -195,3 +195,4 @@ Content / Trust / Conversion:
 - [PROJECT_STATE.md](./PROJECT_STATE.md) — 현재 진행 상태, 남은 리스크, 다음 예정
 - [IMAGE_ASSET_CHECKLIST.md](./IMAGE_ASSET_CHECKLIST.md) — 필요한 이미지 목록, 파일명 규칙, 저작권 주의사항
 - [CLIENT_INTAKE_CHECKLIST.md](./CLIENT_INTAKE_CHECKLIST.md) — 실제 고객에게 원페이지 제작 전 받아야 할 자료 체크리스트
+- [DELIVERY_CHECKLIST.md](./DELIVERY_CHECKLIST.md) — 제작 완료 후 납품/배포 전 확인할 QA 체크리스트

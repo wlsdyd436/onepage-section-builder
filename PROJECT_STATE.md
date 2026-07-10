@@ -94,13 +94,18 @@ StickyMobileCTA01
 - [CLIENT_INTAKE_CHECKLIST.md](./CLIENT_INTAKE_CHECKLIST.md) 작성 완료
 - 실제 고객 자료 수집 전 체크리스트 준비 완료(업체 정보/Hero/Portfolio/BeforeAfter/후기/절차/FAQ/서비스/연락처/이미지 기준 포함)
 
+## 납품/운영 체크리스트 상태
+- [DELIVERY_CHECKLIST.md](./DELIVERY_CHECKLIST.md) 작성 완료
+- 고객자료 수집 → 이미지 자산 → 납품 QA까지 기본 운영 문서 정리 완료
+- Header "회사소개"(`#about`) dead anchor known issue를 DELIVERY_CHECKLIST.md의 납품 전 확인 항목으로 명시함(아직 미해결, 별도 단계에서 정리 예정)
+
 ## 다음 후보
 - 실제 Portfolio/BeforeAfter 이미지 확보 및 적용, crop/fit 재검증
 - hero.media에 hero-02/03 등 추가해 슬라이더 활성화 검토
-- 납품/운영 체크리스트 작성
+- Header "회사소개" dead anchor 정리(About01 추가/메뉴 삭제/다른 섹션 연결 중 택1)
 - FinalCTA01 variant 필요성 검토
 - 고객별 sections config/preset 구조 검토
 
 ## 마지막 업데이트
 - 날짜: 2026-07-10
-- 작업: CLIENT_INTAKE_CHECKLIST.md 작성, README.md 참고 문서 링크 추가
+- 작업: DELIVERY_CHECKLIST.md 작성, README.md 참고 문서 링크 추가
