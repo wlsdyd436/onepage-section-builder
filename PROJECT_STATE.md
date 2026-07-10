@@ -108,4 +108,4 @@ StickyMobileCTA01
 
 ## 마지막 업데이트
 - 날짜: 2026-07-10
-- 작업: DELIVERY_CHECKLIST.md 작성, README.md 참고 문서 링크 추가
+- 작업: index.astro 동기화 수정 완료 — CONFIG TEST 임시 섹션 및 "ONEPAGE SECTION BUILDER / 원페이지 제작 시스템 시작" 테스트 영역 제거, 완성형 인테리어 원페이지 데모 흐름(PortfolioGrid01 → BeforeAfter01 → Review01 → ProcessSteps01 → FAQ01 → ServiceCards01 → ContactCTA01 → Footer01 → StickyMobileCTA01) 정상 렌더링 확인, npx astro build 통과

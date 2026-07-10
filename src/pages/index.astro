@@ -23,16 +23,16 @@ import type { FooterNavItem } from '../components/layout/Footer01.astro';
 // 나중에는 clientId를 기준으로 동적으로 불러오게 되지만, 지금은 샘플 파일 하나를 고정으로 연결한다.
 import clientConfig from '../data/clients/interior-sample.json';
 
-// [2] site / header / hero / sections 데이터를 분리하는 부분이다.
+// [2] site / header / hero / 각 섹션 데이터를 분리한다.
 // config 전체를 그대로 쓰지 않고, 화면에서 쓰기 편하게 각 영역별로 꺼내둔다.
-const { site, header, hero, portfolio, beforeAfter, reviews, process, faq, services, footer, sections } = clientConfig;
+const { site, header, hero, portfolio, beforeAfter, reviews, process, faq, services, footer } = clientConfig;
 ---
 
 <BaseLayout
   title="원페이지 섹션 빌더"
   description="섹션을 조립해서 원페이지 홈페이지를 제작하는 시스템"
 >
-  <!-- 11단계: 실제 Header01 컴포넌트를 페이지 최상단에 배치한다. -->
+  <!-- Header01: 페이지 최상단 헤더 -->
   <Header01
     logo={header.logo}
     logoText={header.logoText}
@@ -41,7 +41,7 @@ const { site, header, hero, portfolio, beforeAfter, reviews, process, faq, servi
     cta={header.cta}
   />
 
-  <!-- 12단계: Header01 바로 아래에 실제 HeroMedia01 첫 화면을 배치한다. -->
+  <!-- HeroMedia01: Header01 바로 아래 첫 화면 -->
   <HeroMedia01
     id={hero.id}
     type={hero.type}
@@ -55,101 +55,10 @@ const { site, header, hero, portfolio, beforeAfter, reviews, process, faq, servi
     autoplaySpeed={hero.autoplaySpeed}
   />
 
-  <!-- 14단계: 모바일 하단 pb-24는 StickyMobileCTA01이 마지막 콘텐츠를 가리지 않게 하는 여백이다. -->
+  <!-- 모바일 하단 pb-24는 StickyMobileCTA01이 마지막 콘텐츠를 가리지 않게 하는 여백이다. -->
   <!-- lg 이상(PC)에서는 StickyMobileCTA01 자체가 숨겨지므로 여백도 필요 없어 lg:pb-0으로 되돌린다. -->
-  <main class="min-h-screen bg-neutral-950 text-white pb-24 lg:pb-0">
-    <section class="flex min-h-screen items-center justify-center px-6 text-center">
-      <div>
-        <!-- 첫 테스트 문구다. Tailwind 적용 여부를 확인하는 용도다. -->
-        <p class="mb-4 text-sm font-semibold tracking-[0.3em] text-amber-300">
-          ONEPAGE SECTION BUILDER
-        </p>
-
-        <h1 class="text-4xl font-bold md:text-6xl">
-          원페이지 제작 시스템 시작
-        </h1>
-
-        <p class="mt-6 text-lg text-neutral-300">
-          Header와 Hero 모듈을 하나씩 붙여갈 준비가 완료되었습니다.
-        </p>
-      </div>
-    </section>
-
-    <!-- CONFIG TEST: 10단계 - JSON config가 정상적으로 연결되는지만 확인하는 임시 테스트 영역이다. -->
-    <!-- Header01, HeroMedia01 컴포넌트가 만들어지면 이 영역은 걷어낼 예정이다. -->
-    <section class="min-h-screen bg-neutral-900 px-6 py-16">
-      <div class="mx-auto max-w-3xl">
-        <p class="mb-10 text-center text-sm font-semibold tracking-[0.3em] text-emerald-400">
-          CONFIG TEST
-        </p>
-
-        <!-- 업체명 / 업체 설명 테스트 -->
-        <div class="mb-8 rounded-xl border border-neutral-700 bg-neutral-800 p-6 text-center">
-          <h2 class="text-2xl font-bold md:text-3xl">{site.businessName}</h2>
-          <p class="mt-3 text-neutral-300">{site.description}</p>
-        </div>
-
-        <!-- Hero 문구 테스트: title / subtitle / description 출력 -->
-        <div class="mb-8 rounded-xl border border-neutral-700 bg-neutral-800 p-6">
-          <p class="mb-2 text-xs font-semibold tracking-widest text-amber-300">HERO 문구 테스트</p>
-          <h3 class="whitespace-pre-line text-xl font-bold">{hero.title}</h3>
-          <p class="mt-2 text-neutral-300">{hero.subtitle}</p>
-          <p class="mt-1 text-sm text-neutral-400">{hero.description}</p>
-          <!-- hero.media는 /clients/{clientId}/... 형태의 public 폴더 경로 문자열이다. -->
-          <!-- 지금은 실제 이미지 파일이 없어도 되고, 나중에 public/clients/interior-sample/ 안에 파일을 넣으면 그대로 연결된다. -->
-          <p class="mt-3 text-xs text-neutral-500">media 경로: {hero.media}</p>
-        </div>
-
-        <!-- Header 메뉴 테스트: header.navItems를 반복 출력하는 부분 -->
-        <div class="mb-8 rounded-xl border border-neutral-700 bg-neutral-800 p-6">
-          <p class="mb-4 text-xs font-semibold tracking-widest text-amber-300">HEADER 메뉴 테스트</p>
-          <div class="flex flex-wrap justify-center gap-3">
-            {header.navItems.map((item) => (
-              <a
-                href={`#${item.target}`}
-                class="rounded-full border border-neutral-600 px-4 py-2 text-sm text-neutral-200 hover:border-emerald-400 hover:text-emerald-300"
-              >
-                {item.label}
-              </a>
-            ))}
-          </div>
-        </div>
-
-        <!-- Hero 버튼 테스트: hero.buttons를 반복 출력하는 부분 -->
-        <div class="mb-8 rounded-xl border border-neutral-700 bg-neutral-800 p-6">
-          <p class="mb-4 text-xs font-semibold tracking-widest text-amber-300">HERO 버튼 테스트</p>
-          <div class="flex flex-wrap justify-center gap-3">
-            {hero.buttons.map((btn) => (
-              <a
-                href={`#${btn.target}`}
-                class={
-                  btn.style === 'primary'
-                    ? 'rounded-lg bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-neutral-950'
-                    : 'rounded-lg border border-neutral-500 px-5 py-2.5 text-sm font-semibold text-neutral-200'
-                }
-              >
-                {btn.label}
-              </a>
-            ))}
-          </div>
-        </div>
-
-        <!-- 선택된 섹션 테스트: sections를 반복 출력하는 부분 -->
-        <!-- sections는 배열이 아니라 객체이므로 Object.values로 배열화한 뒤 반복한다. -->
-        <div class="rounded-xl border border-neutral-700 bg-neutral-800 p-6 text-center">
-          <p class="mb-4 text-xs font-semibold tracking-widest text-amber-300">선택된 섹션 테스트</p>
-          <div class="flex flex-wrap justify-center gap-3">
-            {Object.values(sections).map((sec) => (
-              <span class="rounded-full bg-neutral-700 px-4 py-2 text-sm text-neutral-100">
-                {sec.title} {sec.enabled ? '✓' : '✗'}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 16단계: Header nav / Hero 버튼의 target="portfolio"(#portfolio)가 실제로 도착하는 목적지다. -->
+  <main class="bg-neutral-950 text-white pb-24 lg:pb-0">
+    <!-- Header nav / Hero 버튼의 target="portfolio"(#portfolio)가 실제로 도착하는 목적지다. -->
     <PortfolioGrid01
       id="portfolio"
       title={portfolio.title}
@@ -157,8 +66,7 @@ const { site, header, hero, portfolio, beforeAfter, reviews, process, faq, servi
       items={portfolio.items as PortfolioItem[]}
     />
 
-    <!-- 18단계: 시공 사례(PortfolioGrid01) 다음, 상담 문의(ContactCTA01) 이전에 배치해 -->
-    <!-- "사례를 봤으니 실제로 얼마나 달라지는지" 신뢰를 강화한 뒤 상담으로 이어지게 한다. -->
+    <!-- BeforeAfter01: 시공 사례 다음 — 전후 변화로 신뢰 강화 -->
     <BeforeAfter01
       eyebrow={beforeAfter.eyebrow}
       title={beforeAfter.title}
@@ -166,8 +74,7 @@ const { site, header, hero, portfolio, beforeAfter, reviews, process, faq, servi
       items={beforeAfter.items as BeforeAfterItem[]}
     />
 
-    <!-- 19단계: 전후 비교(BeforeAfter01) 다음, 상담 문의(ContactCTA01) 이전에 배치해 -->
-    <!-- "다른 고객도 만족했다"는 신뢰를 더한 뒤 상담으로 이어지게 한다. -->
+    <!-- Review01: 고객 후기 — 전후 비교 다음, 상담 진입 장벽 낮춤 -->
     <!-- Header nav의 target="reviews"(#reviews)가 실제로 도착하는 목적지이기도 하다. -->
     <Review01
       eyebrow={reviews.eyebrow}
@@ -176,8 +83,7 @@ const { site, header, hero, portfolio, beforeAfter, reviews, process, faq, servi
       items={reviews.items as ReviewItem[]}
     />
 
-    <!-- 20단계: 고객 후기(Review01) 다음, 상담 문의(ContactCTA01) 이전에 배치해 -->
-    <!-- "문의하면 이후에 어떻게 진행되는지" 미리 보여줘 상담 진입 장벽을 낮춘다. -->
+    <!-- ProcessSteps01: 진행 절차 — 상담 진입 장벽 낮춤 -->
     <!-- Header nav의 target="process"(#process)가 실제로 도착하는 목적지이기도 하다. -->
     <ProcessSteps01
       eyebrow={process.eyebrow}
@@ -186,8 +92,7 @@ const { site, header, hero, portfolio, beforeAfter, reviews, process, faq, servi
       items={process.items as ProcessStepItem[]}
     />
 
-    <!-- 21단계: 진행 절차(ProcessSteps01) 다음, 상담 문의(ContactCTA01) 이전에 배치해 -->
-    <!-- 문의 직전에 남아있는 의문을 미리 해소하고 상담 진입 장벽을 낮춘다. -->
+    <!-- FAQ01: 자주 묻는 질문 — 문의 직전 의문 해소 -->
     <FAQ01
       eyebrow={faq.eyebrow}
       title={faq.title}
@@ -195,8 +100,7 @@ const { site, header, hero, portfolio, beforeAfter, reviews, process, faq, servi
       items={faq.items as FAQItem[]}
     />
 
-    <!-- 22단계: 자주 묻는 질문(FAQ01) 다음, 상담 문의(ContactCTA01) 이전에 배치해 -->
-    <!-- 문의 직전에 제공 가능한 서비스 범위를 다시 한번 정리해 보여준다. -->
+    <!-- ServiceCards01: 서비스 범위 — 문의 직전 제공 서비스 정리 -->
     <ServiceCards01
       eyebrow={services.eyebrow}
       title={services.title}
@@ -204,7 +108,7 @@ const { site, header, hero, portfolio, beforeAfter, reviews, process, faq, servi
       items={services.items as ServiceItem[]}
     />
 
-    <!-- 15단계: Header CTA / Hero 버튼 / StickyMobileCTA01의 #contact 링크가 실제로 도착하는 목적지다. -->
+    <!-- ContactCTA01: Header CTA / Hero 버튼 / StickyMobileCTA01의 #contact 목적지 -->
     <ContactCTA01
       id="contact"
       businessName={site.businessName}
@@ -214,9 +118,7 @@ const { site, header, hero, portfolio, beforeAfter, reviews, process, faq, servi
     />
   </main>
 
-  <!-- 23단계: Footer01은 Header01과 마찬가지로 페이지 전역 레이아웃 성격이라 <main> 바깥에 -->
-  <!-- 배치한다. 문서 흐름상 ContactCTA01 다음(마지막 콘텐츠)이며, fixed 요소가 아니므로 -->
-  <!-- StickyMobileCTA01 앞에 와도 실제 화면에서는 항상 맨 아래에 표시된다. -->
+  <!-- Footer01: <main> 바깥, ContactCTA01 다음. fixed 요소가 아니라 문서 흐름에 포함된다. -->
   <Footer01
     businessName={site.businessName}
     description={site.description}
@@ -229,7 +131,7 @@ const { site, header, hero, portfolio, beforeAfter, reviews, process, faq, servi
     copyright={footer.copyright}
   />
 
-  <!-- 14단계: 모바일 전용 하단 고정 CTA. site.phone/header.cta 필드를 그대로 재사용한다. -->
+  <!-- StickyMobileCTA01: 모바일 전용 하단 고정 CTA. site.phone/header.cta 재사용 -->
   <StickyMobileCTA01
     phone={site.phone}
     primaryLabel={header.cta.label}
