@@ -25,6 +25,7 @@
 - ProcessSteps01
 - FAQ01
 - ServiceCards01
+- Footer01
 - sectionRegistry MVP
 - showroom MVP
 
@@ -38,6 +39,7 @@ ProcessSteps01
 FAQ01
 ServiceCards01
 ContactCTA01
+Footer01
 StickyMobileCTA01
 
 ## 현재 showroom 등록 상태 (`src/lib/sectionRegistry.ts`)
@@ -49,6 +51,7 @@ StickyMobileCTA01
 - FAQ01 (preview)
 - ServiceCards01 (preview)
 - ContactCTA01 (preview)
+- Footer01 (preview — fixed 요소가 아니라 그대로 렌더링)
 - Header01 (metadata only, preview 제외 — 전역 레이아웃 컴포넌트)
 - StickyMobileCTA01 (metadata only, preview 제외 — fixed 고정 UI)
 
@@ -68,11 +71,11 @@ StickyMobileCTA01
 - 가격/상품화 문서는 아직 별도 필요
 
 ## 다음 예정
-- FinalCTA01 또는 Footer01
+- 1차 데모 QA 또는 FinalCTA01 variant 검토
 - 이후 section variants 확장
 - 이후 README/납품 문서 정리
 - 이후 실제 이미지 적용 테스트
 
 ## 마지막 업데이트
 - 날짜: 2026-07-10
-- 작업: PortfolioGrid01/BeforeAfter01 텍스트 안정화 보강 및 PROJECT_STATE.md 최초 작성
+- 작업: Footer01 추가(사이트 하단 마감 섹션), sectionRegistry/showroom 등록, index 데모 적용

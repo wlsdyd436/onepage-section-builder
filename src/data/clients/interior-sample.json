@@ -376,6 +376,20 @@
       }
     ]
   },
+  "footer": {
+    "navItems": [
+      { "label": "시공사례", "target": "portfolio" },
+      { "label": "전후비교", "target": "before-after" },
+      { "label": "고객후기", "target": "reviews" },
+      { "label": "진행절차", "target": "process" },
+      { "label": "FAQ", "target": "faq" },
+      { "label": "서비스", "target": "services" },
+      { "label": "문의", "target": "contact" }
+    ],
+    "businessHours": "평일 09:00 - 18:00 (상담 가능 시간)",
+    "businessInfoNote": "사업자 정보는 고객 자료 확인 후 입력합니다.",
+    "copyright": "© 2026 진용 프리미엄 인테리어. All rights reserved."
+  },
   "sections": {
     "about": { "id": "about", "enabled": true, "title": "회사소개" },
     "portfolio": { "id": "portfolio", "enabled": true, "title": "시공사례" },

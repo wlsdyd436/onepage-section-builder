@@ -6,6 +6,7 @@ import ProcessSteps01 from '../components/sections/process/ProcessSteps01.astro'
 import FAQ01 from '../components/sections/faq/FAQ01.astro';
 import ServiceCards01 from '../components/sections/service/ServiceCards01.astro';
 import ContactCTA01 from '../components/sections/contact/ContactCTA01.astro';
+import Footer01 from '../components/layout/Footer01.astro';
 import clientConfig from '../data/clients/interior-sample.json';
 
 // sectionRegistry는 이 프로젝트에 존재하는 모든 섹션 컴포넌트를 한곳에서 관리하는 목록이다.
@@ -29,7 +30,7 @@ export interface SectionRegistryEntry {
   showInShowroom?: boolean;
 }
 
-const { site, hero, portfolio, beforeAfter, reviews, process: processSteps, faq, services } = clientConfig;
+const { site, hero, portfolio, beforeAfter, reviews, process: processSteps, faq, services, footer } = clientConfig;
 
 export const sectionRegistry: SectionRegistryEntry[] = [
   {
@@ -157,6 +158,28 @@ export const sectionRegistry: SectionRegistryEntry[] = [
       kakaoUrl: site.kakaoUrl,
       address: site.address,
     },
+    showInShowroom: true,
+  },
+  {
+    id: 'Footer01',
+    name: 'Footer01 - 기본 푸터',
+    category: 'Footer',
+    description: '업체 정보, 하단 내비게이션, 연락 링크, 저작권을 표시하는 사이트 하단 섹션.',
+    status: 'ready',
+    component: Footer01,
+    previewProps: {
+      businessName: site.businessName,
+      description: site.description,
+      navItems: footer.navItems,
+      phone: site.phone,
+      kakaoUrl: site.kakaoUrl,
+      address: site.address,
+      businessHours: footer.businessHours,
+      businessInfoNote: footer.businessInfoNote,
+      copyright: footer.copyright,
+    },
+    // Footer01은 Header01/StickyMobileCTA01과 달리 fixed 요소가 아니라서 showroom에서
+    // 그대로 preview 가능하다(문서 흐름을 방해하지 않는다).
     showInShowroom: true,
   },
   {

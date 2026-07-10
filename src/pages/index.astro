@@ -16,6 +16,8 @@ import FAQ01 from '../components/sections/faq/FAQ01.astro';
 import type { FAQItem } from '../components/sections/faq/FAQ01.astro';
 import ServiceCards01 from '../components/sections/service/ServiceCards01.astro';
 import type { ServiceItem } from '../components/sections/service/ServiceCards01.astro';
+import Footer01 from '../components/layout/Footer01.astro';
+import type { FooterNavItem } from '../components/layout/Footer01.astro';
 
 // [1] 고객별 JSON config를 import하는 부분이다.
 // 나중에는 clientId를 기준으로 동적으로 불러오게 되지만, 지금은 샘플 파일 하나를 고정으로 연결한다.
@@ -23,7 +25,7 @@ import clientConfig from '../data/clients/interior-sample.json';
 
 // [2] site / header / hero / sections 데이터를 분리하는 부분이다.
 // config 전체를 그대로 쓰지 않고, 화면에서 쓰기 편하게 각 영역별로 꺼내둔다.
-const { site, header, hero, portfolio, beforeAfter, reviews, process, faq, services, sections } = clientConfig;
+const { site, header, hero, portfolio, beforeAfter, reviews, process, faq, services, footer, sections } = clientConfig;
 ---
 
 <BaseLayout
@@ -211,6 +213,21 @@ const { site, header, hero, portfolio, beforeAfter, reviews, process, faq, servi
       address={site.address}
     />
   </main>
+
+  <!-- 23단계: Footer01은 Header01과 마찬가지로 페이지 전역 레이아웃 성격이라 <main> 바깥에 -->
+  <!-- 배치한다. 문서 흐름상 ContactCTA01 다음(마지막 콘텐츠)이며, fixed 요소가 아니므로 -->
+  <!-- StickyMobileCTA01 앞에 와도 실제 화면에서는 항상 맨 아래에 표시된다. -->
+  <Footer01
+    businessName={site.businessName}
+    description={site.description}
+    navItems={footer.navItems as FooterNavItem[]}
+    phone={site.phone}
+    kakaoUrl={site.kakaoUrl}
+    address={site.address}
+    businessHours={footer.businessHours}
+    businessInfoNote={footer.businessInfoNote}
+    copyright={footer.copyright}
+  />
 
   <!-- 14단계: 모바일 전용 하단 고정 CTA. site.phone/header.cta 필드를 그대로 재사용한다. -->
   <StickyMobileCTA01
