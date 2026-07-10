@@ -1,3 +1,12 @@
+# onepage-section-builder
+
+섹션 조합형 원페이지 제작 시스템 MVP입니다.
+현재 상세 진행 상태는 [PROJECT_STATE.md](./PROJECT_STATE.md)를 참고하세요.
+
+자세한 README는 데모 1차 완성 후 작성 예정입니다.
+
+---
+
 # Astro Starter Kit: Minimal
 
 ```sh

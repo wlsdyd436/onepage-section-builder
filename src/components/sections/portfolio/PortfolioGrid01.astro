@@ -40,15 +40,15 @@ const {
 
 <section id={id} class="w-full bg-neutral-900 px-5 py-20 text-white md:px-6 lg:px-8">
   <div class="mx-auto max-w-3xl text-center">
-    <h2 class="text-3xl font-bold sm:text-4xl">{title}</h2>
-    <p class="mt-4 break-keep text-neutral-300">{description}</p>
+    <h2 class="break-keep break-words text-3xl font-bold sm:text-4xl">{title}</h2>
+    <p class="mt-4 break-keep break-words text-neutral-300">{description}</p>
   </div>
 
   <!-- 반응형 열 수: 모바일은 grid-cols-1(세로 스크롤만으로 보기 편함), md(768px, 태블릿)부터 -->
   <!-- 2열, lg(1024px, PC)부터 3열로 늘려 화면이 넓어질수록 더 많은 사례를 한 번에 보여준다. -->
   <div class="mx-auto mt-12 grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
     {items.map((item) => (
-      <article class="flex flex-col overflow-hidden rounded-xl border border-neutral-700 bg-neutral-800">
+      <article class="flex min-w-0 flex-col overflow-hidden rounded-xl border border-neutral-700 bg-neutral-800">
         {item.image ? (
           <MediaImage media={item.image} defaultAspectRatio="video" alt={item.title} />
         ) : (
@@ -57,19 +57,19 @@ const {
 
         <div class="flex flex-1 flex-col gap-2 p-5">
           {item.category && (
-            <span class="inline-block w-fit rounded-full bg-neutral-700 px-3 py-1 text-xs text-neutral-200">
+            <span class="inline-block w-fit min-w-0 break-keep break-words rounded-full bg-neutral-700 px-3 py-1 text-xs text-neutral-200">
               {item.category}
             </span>
           )}
 
-          <h3 class="break-keep text-lg font-bold">{item.title}</h3>
+          <h3 class="break-keep break-words text-lg font-bold">{item.title}</h3>
 
-          <p class="text-sm text-neutral-400">
+          <p class="break-keep break-words text-sm text-neutral-400">
             {[item.location, item.size, item.style].filter(Boolean).join(' · ')}
           </p>
 
           {item.description && (
-            <p class="break-keep text-sm text-neutral-400">{item.description}</p>
+            <p class="break-keep break-words text-sm text-neutral-400">{item.description}</p>
           )}
         </div>
       </article>

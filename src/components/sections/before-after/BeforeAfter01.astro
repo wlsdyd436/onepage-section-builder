@@ -41,9 +41,9 @@ const {
 
 <section id={id} class="w-full bg-neutral-900 px-5 py-20 text-white md:px-6 lg:px-8">
   <div class="mx-auto max-w-3xl text-center">
-    <p class="text-sm font-semibold tracking-[0.2em] text-amber-300">{eyebrow}</p>
-    <h2 class="mt-4 break-keep text-3xl font-bold sm:text-4xl">{title}</h2>
-    <p class="mt-4 break-keep text-neutral-300">{description}</p>
+    <p class="break-keep break-words text-sm font-semibold tracking-[0.2em] text-amber-300">{eyebrow}</p>
+    <h2 class="mt-4 break-keep break-words text-3xl font-bold sm:text-4xl">{title}</h2>
+    <p class="mt-4 break-keep break-words text-neutral-300">{description}</p>
   </div>
 
   <!-- 카드 목록: 모바일/태블릿/PC 모두 세로로 쌓는다(카드 자체 배치는 단순 리스트). -->
@@ -83,15 +83,15 @@ const {
           </div>
         </div>
 
-        <div class="flex flex-col gap-2 p-5">
-          <h3 class="break-keep text-lg font-bold">{item.title}</h3>
+        <div class="flex min-w-0 flex-col gap-2 p-5">
+          <h3 class="break-keep break-words text-lg font-bold">{item.title}</h3>
 
-          <p class="text-sm text-neutral-400">
+          <p class="break-keep break-words text-sm text-neutral-400">
             {[item.location, item.size, item.scope].filter(Boolean).join(' · ')}
           </p>
 
           {item.description && (
-            <p class="break-keep text-sm text-neutral-400">{item.description}</p>
+            <p class="break-keep break-words text-sm text-neutral-400">{item.description}</p>
           )}
         </div>
       </article>
