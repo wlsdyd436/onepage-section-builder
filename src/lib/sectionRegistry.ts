@@ -1,5 +1,6 @@
 import HeroMedia01 from '../components/sections/hero/HeroMedia01.astro';
 import PortfolioGrid01 from '../components/sections/portfolio/PortfolioGrid01.astro';
+import BeforeAfter01 from '../components/sections/before-after/BeforeAfter01.astro';
 import ContactCTA01 from '../components/sections/contact/ContactCTA01.astro';
 import clientConfig from '../data/clients/interior-sample.json';
 
@@ -24,7 +25,7 @@ export interface SectionRegistryEntry {
   showInShowroom?: boolean;
 }
 
-const { site, hero, portfolio } = clientConfig;
+const { site, hero, portfolio, beforeAfter } = clientConfig;
 
 export const sectionRegistry: SectionRegistryEntry[] = [
   {
@@ -61,6 +62,21 @@ export const sectionRegistry: SectionRegistryEntry[] = [
       title: portfolio.title,
       description: portfolio.description,
       items: portfolio.items,
+    },
+    showInShowroom: true,
+  },
+  {
+    id: 'BeforeAfter01',
+    name: 'Before-After - 시공 전후 비교',
+    category: 'Before-After',
+    description: '시공 전후 이미지를 카드 형태로 비교해 변화와 신뢰를 보여주는 섹션.',
+    status: 'ready',
+    component: BeforeAfter01,
+    previewProps: {
+      eyebrow: beforeAfter.eyebrow,
+      title: beforeAfter.title,
+      description: beforeAfter.description,
+      items: beforeAfter.items,
     },
     showInShowroom: true,
   },

@@ -132,6 +132,76 @@
       }
     ]
   },
+  "beforeAfter": {
+    "eyebrow": "BEFORE & AFTER",
+    "title": "공간은 이렇게 달라집니다",
+    "description": "시공 전후의 변화를 한눈에 확인해보세요.",
+    "items": [
+      {
+        "title": "화이트 우드 거실 리모델링",
+        "location": "서울 강남구",
+        "size": "32평",
+        "scope": "전체 리모델링",
+        "description": "낡은 벽지와 어두운 조명을 걷어내고 화이트 우드 톤으로 공간을 새롭게 완성했습니다.",
+        "beforeImage": {
+          "src": "/clients/interior-sample/before-after/before-01",
+          "alt": "화이트 우드 거실 리모델링 시공 전",
+          "fit": "cover",
+          "position": "center",
+          "aspectRatio": "video"
+        },
+        "afterImage": {
+          "src": "/clients/interior-sample/before-after/after-01",
+          "alt": "화이트 우드 거실 리모델링 시공 후",
+          "fit": "cover",
+          "position": "center",
+          "aspectRatio": "video"
+        }
+      },
+      {
+        "title": "모던 미니멀 주방",
+        "location": "서울 송파구",
+        "size": "28평",
+        "scope": "주방 리모델링",
+        "description": "오래된 싱크대와 수납장을 교체하고 군더더기 없는 라인으로 정리했습니다.",
+        "beforeImage": {
+          "src": "/clients/interior-sample/before-after/before-02",
+          "alt": "모던 미니멀 주방 시공 전",
+          "fit": "cover",
+          "position": "center",
+          "aspectRatio": "video"
+        },
+        "afterImage": {
+          "src": "/clients/interior-sample/before-after/after-02",
+          "alt": "모던 미니멀 주방 시공 후",
+          "fit": "cover",
+          "position": "center",
+          "aspectRatio": "video"
+        }
+      },
+      {
+        "title": "상업 공간 카페 인테리어",
+        "location": "서울 마포구",
+        "size": "18평",
+        "scope": "상가 전체 시공",
+        "description": "노후된 상가를 노출 콘크리트와 우드 소재로 새롭게 재해석했습니다.",
+        "beforeImage": {
+          "src": "/clients/interior-sample/before-after/before-03",
+          "alt": "상업 공간 카페 인테리어 시공 전",
+          "fit": "cover",
+          "position": "center",
+          "aspectRatio": "video"
+        },
+        "afterImage": {
+          "src": "/clients/interior-sample/before-after/after-03",
+          "alt": "상업 공간 카페 인테리어 시공 후",
+          "fit": "cover",
+          "position": "center",
+          "aspectRatio": "video"
+        }
+      }
+    ]
+  },
   "sections": {
     "about": { "id": "about", "enabled": true, "title": "회사소개" },
     "portfolio": { "id": "portfolio", "enabled": true, "title": "시공사례" },
