@@ -1,0 +1,78 @@
+---
+import MediaImage from '../../media/MediaImage.astro';
+import type { MediaItemInput } from '../../../types/media';
+
+// [PortfolioGrid01] 인테리어 원페이지 데모에서 시공 사례는 고객이 실제로 신뢰를 형성하는
+// 핵심 섹션이다. Header의 "시공사례" nav item과 Hero의 "시공사례 보기" 버튼이 모두
+// target="portfolio"(#portfolio)를 가리키므로, id="portfolio"인 이 섹션이 그 실제 목적지다.
+//
+// 이미지는 항상 공통 MediaImage.astro로 렌더링한다. 섹션마다 확장자 탐색/fit/position/
+// aspectRatio 처리를 새로 짜지 않고 한 곳에 모아두기 위한 것으로, mediaResolver/mediaDisplay와
+// 동일한 규칙을 그대로 물려받는다.
+//
+// 이번 MVP는 카드 그리드로 사례를 보여주는 것까지만 다룬다. 카테고리 필터, 카드 클릭 시
+// 모달/상세페이지, sectionRegistry를 통한 동적 로딩, showroom 페이지는 이후 확장 범위이며
+// 이번 단계에서는 만들지 않는다 — 지금은 index.astro에서 이 컴포넌트를 직접 import해서 쓴다.
+export interface PortfolioItem {
+  title: string;
+  category?: string;
+  location?: string;
+  size?: string;
+  style?: string;
+  description?: string;
+  image?: MediaItemInput;
+}
+
+interface Props {
+  id?: string;
+  title?: string;
+  description?: string;
+  items?: PortfolioItem[];
+}
+
+const {
+  id = 'portfolio',
+  title = '시공 사례',
+  description = '공간의 목적과 분위기에 맞춘 인테리어 사례를 확인해보세요.',
+  items = [],
+} = Astro.props;
+---
+
+<section id={id} class="w-full bg-neutral-900 px-5 py-20 text-white md:px-6 lg:px-8">
+  <div class="mx-auto max-w-3xl text-center">
+    <h2 class="text-3xl font-bold sm:text-4xl">{title}</h2>
+    <p class="mt-4 break-keep text-neutral-300">{description}</p>
+  </div>
+
+  <!-- 반응형 열 수: 모바일은 grid-cols-1(세로 스크롤만으로 보기 편함), md(768px, 태블릿)부터 -->
+  <!-- 2열, lg(1024px, PC)부터 3열로 늘려 화면이 넓어질수록 더 많은 사례를 한 번에 보여준다. -->
+  <div class="mx-auto mt-12 grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    {items.map((item) => (
+      <article class="flex flex-col overflow-hidden rounded-xl border border-neutral-700 bg-neutral-800">
+        {item.image ? (
+          <MediaImage media={item.image} defaultAspectRatio="video" alt={item.title} />
+        ) : (
+          <div class="aspect-video w-full bg-neutral-800" />
+        )}
+
+        <div class="flex flex-1 flex-col gap-2 p-5">
+          {item.category && (
+            <span class="inline-block w-fit rounded-full bg-neutral-700 px-3 py-1 text-xs text-neutral-200">
+              {item.category}
+            </span>
+          )}
+
+          <h3 class="break-keep text-lg font-bold">{item.title}</h3>
+
+          <p class="text-sm text-neutral-400">
+            {[item.location, item.size, item.style].filter(Boolean).join(' · ')}
+          </p>
+
+          {item.description && (
+            <p class="break-keep text-sm text-neutral-400">{item.description}</p>
+          )}
+        </div>
+      </article>
+    ))}
+  </div>
+</section>
