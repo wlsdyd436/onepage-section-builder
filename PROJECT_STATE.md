@@ -83,12 +83,20 @@ StickyMobileCTA01
 - 섹션 전시장(`/showroom`) MVP 정상 작동(11개 등록, 9개 preview)
 - 실제 이미지 투입 전 fallback 기준 안정화 완료
 
+## 이미지 자산 상태
+- 실제 이미지 적용 전 [IMAGE_ASSET_CHECKLIST.md](./IMAGE_ASSET_CHECKLIST.md) 작성 완료
+- 로고/Hero 대표 이미지 1장은 실제 파일 존재, 정상 로드 확인(200, 404 없음)
+- Portfolio 6장 / BeforeAfter 6장은 아직 파일 없음 — fallback 기준으로만 검증된 상태
+- hero-02/03/05 파일은 public에 있지만 JSON 미반영(다음 단계 후보)
+- 공개 데모 이미지와 실제 고객 이미지는 분리 관리 예정(`.gitignore`로 고객 폴더는 이미 제외됨)
+
 ## 다음 후보
-- 실제 이미지(Portfolio/BeforeAfter) 적용 및 crop/fit 재검증
+- 실제 Portfolio/BeforeAfter 이미지 확보 및 적용, crop/fit 재검증
+- hero.media에 hero-02/03 등 추가해 슬라이더 활성화 검토
 - 납품/고객자료 수집 체크리스트 작성
 - FinalCTA01 variant 필요성 검토
 - 고객별 sections config/preset 구조 검토
 
 ## 마지막 업데이트
 - 날짜: 2026-07-10
-- 작업: README v1 작성 완료(프로젝트 개요/페이지 구조/실행법/폴더 구조/섹션 목록/새 섹션 추가 흐름/설계 원칙/하지 않는 것 정리), PROJECT_STATE.md와 정합성 확인
+- 작업: IMAGE_ASSET_CHECKLIST.md 작성, 이미지 슬롯/실제 파일 존재 여부 점검, 로고·Hero 이미지 제한적 QA 수행
