@@ -3,6 +3,7 @@ import PortfolioGrid01 from '../components/sections/portfolio/PortfolioGrid01.as
 import BeforeAfter01 from '../components/sections/before-after/BeforeAfter01.astro';
 import Review01 from '../components/sections/review/Review01.astro';
 import ProcessSteps01 from '../components/sections/process/ProcessSteps01.astro';
+import FAQ01 from '../components/sections/faq/FAQ01.astro';
 import ContactCTA01 from '../components/sections/contact/ContactCTA01.astro';
 import clientConfig from '../data/clients/interior-sample.json';
 
@@ -27,7 +28,7 @@ export interface SectionRegistryEntry {
   showInShowroom?: boolean;
 }
 
-const { site, hero, portfolio, beforeAfter, reviews, process: processSteps } = clientConfig;
+const { site, hero, portfolio, beforeAfter, reviews, process: processSteps, faq } = clientConfig;
 
 export const sectionRegistry: SectionRegistryEntry[] = [
   {
@@ -109,6 +110,21 @@ export const sectionRegistry: SectionRegistryEntry[] = [
       title: processSteps.title,
       description: processSteps.description,
       items: processSteps.items,
+    },
+    showInShowroom: true,
+  },
+  {
+    id: 'FAQ01',
+    name: 'FAQ01 - 자주 묻는 질문',
+    category: 'FAQ',
+    description: '상담 전 자주 묻는 질문과 답변을 보여주는 섹션.',
+    status: 'ready',
+    component: FAQ01,
+    previewProps: {
+      eyebrow: faq.eyebrow,
+      title: faq.title,
+      description: faq.description,
+      items: faq.items,
     },
     showInShowroom: true,
   },

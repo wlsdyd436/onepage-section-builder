@@ -1,0 +1,64 @@
+---
+// [FAQ01] 상담 전에 자주 묻는 질문과 답변을 정적 카드로 보여주는 설명/전환 보조 섹션이다.
+// ProcessSteps01(진행 절차) 다음, ContactCTA01(상담 문의) 이전에 배치되어 문의 직전에
+// 남아있는 의문을 미리 해소하고 상담 진입 장벽을 낮춘다.
+//
+// 이번 MVP는 JS 토글/accordion 없이 정적 카드/리스트로만 구현한다. 나중에 FAQ02에서
+// accordion variant를 별도로 만들 수 있으므로, 여기서는 collapse 상태 관리를 하지 않는다.
+//
+// 20단계 ProcessSteps01에서 정리한 것처럼, question/answer 모두 처음부터
+// break-keep + break-words를 함께 적용해 공백 없는 긴 텍스트가 들어와도 카드 밖으로
+// 밀려나지 않게 한다.
+export interface FAQItem {
+  question: string;
+  answer: string;
+  category?: string;
+}
+
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  items?: FAQItem[];
+}
+
+const {
+  id = 'faq',
+  eyebrow = '자주 묻는 질문',
+  title = '상담 전에 자주 묻는 질문',
+  description = '문의 전 궁금한 내용을 먼저 확인해보세요.',
+  items = [],
+} = Astro.props;
+---
+
+<section id={id} class="w-full bg-neutral-950 px-5 py-20 text-white md:px-6 lg:px-8">
+  <div class="mx-auto max-w-3xl text-center">
+    <p class="text-sm font-semibold tracking-[0.2em] text-amber-300">{eyebrow}</p>
+    <h2 class="mt-4 break-keep break-words text-3xl font-bold sm:text-4xl">{title}</h2>
+    <p class="mt-4 break-keep break-words text-neutral-300">{description}</p>
+  </div>
+
+  <!-- 반응형 열 수: 모바일 1열, md(768px) 이상은 2열. 카드 개수가 8개 안팎으로 많지 않아 -->
+  <!-- 3열까지는 늘리지 않고 안정적으로 2열까지만 사용한다. -->
+  <!-- min-w-0으로 grid 트랙 안에서 카드가 내용 때문에 트랙보다 넓어지지 않게 막는다. -->
+  <div class="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-2">
+    {items.map((item) => (
+      <article class="flex min-w-0 flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-900 p-6">
+        {item.category && (
+          <span class="w-fit rounded-full bg-neutral-800 px-3 py-1 text-xs text-neutral-300">
+            {item.category}
+          </span>
+        )}
+
+        <p class="break-keep break-words text-base font-bold text-white">
+          <span class="text-amber-300">Q.</span> {item.question}
+        </p>
+
+        <p class="break-keep break-words text-sm leading-relaxed text-neutral-400">
+          <span class="text-neutral-500">A.</span> {item.answer}
+        </p>
+      </article>
+    ))}
+  </div>
+</section>
