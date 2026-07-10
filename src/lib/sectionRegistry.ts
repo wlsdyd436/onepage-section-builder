@@ -1,6 +1,7 @@
 import HeroMedia01 from '../components/sections/hero/HeroMedia01.astro';
 import PortfolioGrid01 from '../components/sections/portfolio/PortfolioGrid01.astro';
 import BeforeAfter01 from '../components/sections/before-after/BeforeAfter01.astro';
+import Review01 from '../components/sections/review/Review01.astro';
 import ContactCTA01 from '../components/sections/contact/ContactCTA01.astro';
 import clientConfig from '../data/clients/interior-sample.json';
 
@@ -25,7 +26,7 @@ export interface SectionRegistryEntry {
   showInShowroom?: boolean;
 }
 
-const { site, hero, portfolio, beforeAfter } = clientConfig;
+const { site, hero, portfolio, beforeAfter, reviews } = clientConfig;
 
 export const sectionRegistry: SectionRegistryEntry[] = [
   {
@@ -77,6 +78,21 @@ export const sectionRegistry: SectionRegistryEntry[] = [
       title: beforeAfter.title,
       description: beforeAfter.description,
       items: beforeAfter.items,
+    },
+    showInShowroom: true,
+  },
+  {
+    id: 'Review01',
+    name: 'Review01 - 고객 후기 카드',
+    category: 'Review',
+    description: '고객 후기를 카드 형태로 보여줘 신뢰를 강화하는 섹션.',
+    status: 'ready',
+    component: Review01,
+    previewProps: {
+      eyebrow: reviews.eyebrow,
+      title: reviews.title,
+      description: reviews.description,
+      items: reviews.items,
     },
     showInShowroom: true,
   },

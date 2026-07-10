@@ -1,0 +1,81 @@
+---
+// [Review01] 고객 후기를 카드 형태로 보여주는 신뢰 섹션이다.
+// PortfolioGrid01(시공 사례) / BeforeAfter01(전후 비교) 다음, ContactCTA01(상담 문의) 이전에
+// 배치되어 "다른 고객도 만족했다"는 확신을 준 뒤 상담으로 이어지는 흐름을 만든다.
+//
+// 데모 데이터는 실명/전화번호/주소 등 개인정보를 담지 않고 "김OO 고객"처럼 익명화된
+// 이름만 사용한다(interior-sample.json의 reviews.items 참고).
+//
+// 이번 MVP는 안정적인 카드형 후기 UI까지만 다룬다. carousel/slider/modal/filter,
+// 외부 리뷰 API 연동은 만들지 않는다. 이미지가 필요 없는 텍스트 중심 섹션이라
+// MediaImage를 쓰지 않고, 별점도 아이콘 라이브러리 없이 문자(★/☆)로 표현한다.
+export interface ReviewItem {
+  title: string;
+  content: string;
+  customerName: string;
+  projectType?: string;
+  location?: string;
+  rating?: number;
+}
+
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  items?: ReviewItem[];
+}
+
+const {
+  id = 'reviews',
+  eyebrow = '고객 후기',
+  title = '실제 고객이 남긴 이야기',
+  description = '상담부터 시공 완료까지의 경험을 확인해보세요.',
+  items = [],
+} = Astro.props;
+
+// rating은 1~5 범위를 기대하지만, config 값이 범위를 벗어나도 화면이 깨지지 않도록
+// 0~5 사이로 clamp한 뒤 채워진 별(★)/빈 별(☆)을 문자열로 조합한다.
+function getStars(rating?: number) {
+  const value = Math.round(rating ?? 5);
+  const filled = Math.max(0, Math.min(5, value));
+  return '★'.repeat(filled) + '☆'.repeat(5 - filled);
+}
+---
+
+<section id={id} class="w-full bg-neutral-950 px-5 py-20 text-white md:px-6 lg:px-8">
+  <div class="mx-auto max-w-3xl text-center">
+    <p class="text-sm font-semibold tracking-[0.2em] text-amber-300">{eyebrow}</p>
+    <h2 class="mt-4 break-keep text-3xl font-bold sm:text-4xl">{title}</h2>
+    <p class="mt-4 break-keep text-neutral-300">{description}</p>
+  </div>
+
+  <!-- 반응형 열 수: 모바일 1열, md(768px, 태블릿) 2열, lg(1024px, PC) 3열. -->
+  <!-- min-w-0으로 grid 트랙 안에서 카드가 내용 때문에 트랙보다 넓어지지 않게 막는다 -->
+  <!-- (기본 min-width: auto 상태로 두면 공백 없는 긴 텍스트가 들어올 때 grid blowout이 생길 수 있다). -->
+  <div class="mx-auto mt-12 grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    {items.map((item) => (
+      <article class="flex min-w-0 flex-col gap-3 rounded-xl border border-neutral-700 bg-neutral-900 p-6">
+        <p class="text-sm tracking-wide text-amber-300" aria-label={`평점 5점 만점에 ${item.rating ?? 5}점`}>
+          {getStars(item.rating)}
+        </p>
+
+        <h3 class="break-keep break-words text-lg font-bold">{item.title}</h3>
+
+        <!-- break-keep(단어 내부 줄바꿈 금지) + break-words(overflow-wrap: break-word)를 함께 써서 -->
+        <!-- 평소에는 한글 단어 단위로 자연스럽게 줄바꿈하되, 공백 없는 비정상적으로 긴 문자열이 -->
+        <!-- 들어와도 카드 밖으로 밀려나지 않고 강제로 줄바꿈되게 한다. -->
+        <p class="break-keep break-words text-sm leading-relaxed text-neutral-300">
+          <span class="text-neutral-500">"</span>{item.content}<span class="text-neutral-500">"</span>
+        </p>
+
+        <div class="mt-auto flex flex-col gap-1 border-t border-neutral-800 pt-4 text-sm text-neutral-400">
+          <span class="break-keep break-words font-semibold text-neutral-200">{item.customerName}</span>
+          <span class="break-keep break-words">
+            {[item.projectType, item.location].filter(Boolean).join(' · ')}
+          </span>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>
