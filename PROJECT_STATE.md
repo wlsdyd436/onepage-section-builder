@@ -108,14 +108,20 @@ StickyMobileCTA01
 - 고객별 sections config / preset 구조는 문서 설계까지 완료(실제 renderer 구현은 아직 없음)
 - 추천 방향: Header/Footer/Sticky는 layout 분리, main 콘텐츠 섹션만 sections[] config 기반인 하이브리드 구조
 
+## nav anchor 검증 상태
+- `scripts/validate-anchors.mjs` 추가 완료(`npm run validate:anchors`)
+- 빌드 결과(`dist/index.html`)의 `href="#target"`이 실제 `id="target"`을 가리키는지, id 중복이 없는지 검사
+- 사용 흐름: `npx astro build` → `npm run validate:anchors`
+- HTML 주석 안 설명 텍스트(예: StickyMobileCTA01.astro의 `id="contact"` 언급)로 인한 거짓 중복을 피하기 위해 주석 제거 후 검사
+- 현재는 `/showroom`은 검사 대상이 아님(같은 컴포넌트 반복 렌더링으로 id가 의도적으로 겹칠 수 있어 `dist/index.html`만 검사)
+
 ## 다음 후보
 - 실제 Portfolio/BeforeAfter 이미지 확보 및 적용, crop/fit 재검증
 - hero.media에 hero-02/03 등 추가해 슬라이더 활성화 검토
 - FinalCTA01 variant 필요성 검토
-- nav anchor 검증(navItems target ↔ 실제 section id) 스크립트/문서화
 - 두 번째 client sample 구조 설계
 - sections config prototype 문서화
 
 ## 마지막 업데이트
 - 날짜: 2026-07-13
-- 작업: SECTION_CONFIG_DESIGN.md 작성 — 고객별 sections config/preset/layout 구조 설계 정리, npx astro build 통과
+- 작업: nav anchor 검증 스크립트(`scripts/validate-anchors.mjs`, `npm run validate:anchors`) 추가, npx astro build 통과

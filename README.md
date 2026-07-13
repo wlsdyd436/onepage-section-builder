@@ -78,6 +78,13 @@ npm run build
 npm run preview
 ```
 
+QA(내부 앵커 링크 검증):
+
+```sh
+npm run build
+npm run validate:anchors
+```
+
 ## 5. 주요 폴더 구조
 
 ```text
