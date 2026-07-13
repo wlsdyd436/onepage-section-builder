@@ -97,15 +97,18 @@ StickyMobileCTA01
 ## 납품/운영 체크리스트 상태
 - [DELIVERY_CHECKLIST.md](./DELIVERY_CHECKLIST.md) 작성 완료
 - 고객자료 수집 → 이미지 자산 → 납품 QA까지 기본 운영 문서 정리 완료
-- Header "회사소개"(`#about`) dead anchor known issue를 DELIVERY_CHECKLIST.md의 납품 전 확인 항목으로 명시함(아직 미해결, 별도 단계에서 정리 예정)
+- Header "회사소개"(`#about`) dead anchor known issue를 DELIVERY_CHECKLIST.md의 납품 전 확인 항목으로 명시함 → 정리 완료(아래 참고)
+
+## Header nav dead anchor 정리
+- "회사소개"(target: `about`) 메뉴를 현재 실제 존재하는 "서비스"(target: `services`) 섹션으로 변경
+- About01 섹션은 추후 필요 시 별도 단계에서 검토
 
 ## 다음 후보
 - 실제 Portfolio/BeforeAfter 이미지 확보 및 적용, crop/fit 재검증
 - hero.media에 hero-02/03 등 추가해 슬라이더 활성화 검토
-- Header "회사소개" dead anchor 정리(About01 추가/메뉴 삭제/다른 섹션 연결 중 택1)
 - FinalCTA01 variant 필요성 검토
 - 고객별 sections config/preset 구조 검토
 
 ## 마지막 업데이트
-- 날짜: 2026-07-10
-- 작업: index.astro 동기화 수정 완료 — CONFIG TEST 임시 섹션 및 "ONEPAGE SECTION BUILDER / 원페이지 제작 시스템 시작" 테스트 영역 제거, 완성형 인테리어 원페이지 데모 흐름(PortfolioGrid01 → BeforeAfter01 → Review01 → ProcessSteps01 → FAQ01 → ServiceCards01 → ContactCTA01 → Footer01 → StickyMobileCTA01) 정상 렌더링 확인, npx astro build 통과
+- 날짜: 2026-07-13
+- 작업: Header nav dead anchor 정리 — "회사소개"(#about) 메뉴를 "서비스"(#services)로 변경, npx astro build 통과

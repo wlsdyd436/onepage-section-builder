@@ -13,7 +13,7 @@
     "logoText": "진용 프리미엄 인테리어",
     "sticky": true,
     "navItems": [
-      { "label": "회사소개", "target": "about" },
+      { "label": "서비스", "target": "services" },
       { "label": "시공사례", "target": "portfolio" },
       { "label": "진행절차", "target": "process" },
       { "label": "고객후기", "target": "reviews" },
