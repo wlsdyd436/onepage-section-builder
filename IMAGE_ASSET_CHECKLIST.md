@@ -103,3 +103,60 @@
 - [ ] broken image icon 없음
 - [ ] 파일이 없는 슬롯은 fallback이 유지되는지 확인
 - [ ] Lighthouse 또는 수동 로딩 속도 확인(후보, 이번 단계 범위 아님)
+
+## 9. 현재 샘플 자산 점검 결과 (2026-07-13 기준)
+
+- 점검 날짜: 2026-07-13
+- 점검 대상:
+  - `src/data/clients/interior-sample.json`
+  - `public/clients/interior-sample/`
+  - `src/lib/mediaResolver.ts` / `src/lib/mediaDisplay.ts` / `src/components/media/MediaImage.astro` / `src/components/sections/hero/HeroMedia01.astro`
+
+### 확인된 자산 구조
+
+`public/clients/interior-sample/`에 실제 존재하는 폴더/파일:
+
+- `brand/`: `logo.png` (1254×1254)
+- `hero/`: `hero-01.jpg`, `hero-02.png`, `hero-03.jpg`, `hero-05.jpg`
+- `portfolio/`: 폴더 자체가 없음
+- `before-after/`: 폴더 자체가 없음
+- `service/`, `review/`: 폴더 없음 — 아래 JSON 참조 점검에서 확인했듯 ServiceCards01/Review01은 애초에 이미지 필드를 쓰지 않는 설계라 폴더가 필요하지 않음(ServiceCards01은 title/description/features/note만 사용, Review01은 텍스트와 별 문자(★)만 사용)
+
+### JSON 참조 경로 점검
+
+| 구분 | JSON 경로 | 실제 파일 존재 | 상태 | 메모 |
+| --- | --- | ---: | --- | --- |
+| 로고 | `header.logo` → `brand/logo` | O | OK | `logo.png`, Header01이 직접 `h-8 w-auto`(contain)로 처리, MediaImage 미사용 |
+| Hero 대표 | `hero.media[0]` → `hero/hero-01` | O | OK / crop 확인 필요 | `hero-01.jpg` 약 4:3, `object-cover` 풀블리드라 와이드 데스크톱에서 좌우 크롭됨(7번 기존 기록과 동일) |
+| Hero 슬라이더 후보 | (JSON 미참조) `hero/hero-02`, `hero-03`, `hero-05` | O | 파일은 있으나 미사용 | `hero.media` 배열에 아직 추가되지 않아 슬라이더 비활성 상태(7번 기존 기록과 동일, 변동 없음) |
+| Portfolio 1~6 | `portfolio.items[].image.src` → `portfolio/portfolio-01`~`06` | X | 누락 (fallback 표시 중) | `aspectRatio: "video"`(16:9) 고정, MediaImage가 `<img>` 없이 `bg-neutral-800` 배경만 표시 |
+| BeforeAfter before 1~3 | `beforeAfter.items[].beforeImage.src` → `before-after/before-01`~`03` | X | 누락 (fallback 표시 중) | `aspectRatio: "video"` 고정 |
+| BeforeAfter after 1~3 | `beforeAfter.items[].afterImage.src` → `before-after/after-01`~`03` | X | 누락 (fallback 표시 중) | `aspectRatio: "video"` 고정 |
+| Services | (해당 필드 없음) | 해당 없음 | 설계상 이미지 미사용 | `ServiceCards01.astro`에 image/media prop 자체가 없음(텍스트 카드) |
+| Review | (해당 필드 없음) | 해당 없음 | 설계상 이미지 미사용 | `Review01.astro`에 image/media prop 자체가 없음(별점은 ★/☆ 문자) |
+
+### mediaResolver / MediaImage / HeroMedia01 동작 확인
+
+- `resolveMediaPath`(mediaResolver.ts)는 extensionless 경로에 `avif → webp → jpg → jpeg → png` 순서로 확장자를 붙여가며 `public/` 안에 실제 파일이 있는지 `fs.existsSync`로 확인한다. 우선순위는 체크리스트 2번 기록과 일치함을 코드로 재확인했다.
+- 파일을 못 찾으면 `resolveMediaPath`/`normalizeMediaItem`이 `null`을 반환하고, `MediaImage.astro`와 `HeroMedia01.astro` 모두 이 경우 `<img>` 태그 자체를 렌더링하지 않는다 — 즉 브라우저가 404를 요청할 대상 자체가 없어 broken image 아이콘이 구조적으로 발생하지 않는다(현재 Portfolio 6장/BeforeAfter 6장 전부 이 경로로 fallback 처리 중).
+- `MediaImage.astro`는 이미지가 없어도 `getAspectRatioClassForPreset`로 요청한 `aspectRatio`(video 등)만큼의 높이를 유지해, 그리드/카드 레이아웃이 이미지 유무와 무관하게 무너지지 않는다.
+- `HeroMedia01.astro`는 `MediaImage`를 쓰지 않고 `normalizeMediaList` + `getObjectFitClass`/`getObjectPositionClass`를 직접 호출하는 별도 구현이다. 배경 레이어에 항상 `bg-neutral-800`을 먼저 깔아두므로 이미지가 없어도 섹션 자체(`min-h-screen`)는 무너지지 않는다. Header01의 로고도 MediaImage를 쓰지 않고 직접 `<img>` + `logoText`로 처리하는 별도 구현이다 — 세 곳(MediaImage/HeroMedia01/Header01)이 각자 구현이지만 "파일 없으면 `<img>` 자체를 만들지 않는다"는 원칙은 공통으로 지켜지고 있음을 코드로 확인했다.
+
+### 모바일 이미지 QA 위험
+
+- **hero mobilePosition**: `mediaDisplay.ts`의 `normalizeMediaItem`은 `mobilePosition` 필드를 정규화 결과에 채워두지만, `getObjectPositionClass`는 현재 `position` 값만 클래스로 변환하고 `mobilePosition`은 실제로 소비하지 않는다(코드 주석에도 "확장 포인트"로 명시됨). 즉 지금은 모바일/PC가 항상 같은 초점을 쓴다 — 실제 고객 Hero 사진에서 핵심 피사체가 모바일 세로 화면에서 잘린다면, 이 지점을 모바일 전용 클래스로 확장하는 작업이 별도로 필요하다(이번 단계 범위 아님, 다음 후보로 기록).
+- **before/after 비율 차이**: 두 이미지 모두 `aspectRatio: "video"`(16:9)로 고정되어 있어 촬영 비율이 서로 다르면 `object-cover`로 각각 다른 비율만큼 크롭되어 나란히 비교했을 때 어색할 수 있다(5번 저작권/자료 기준의 "동일 각도 촬영 권장"과 연결됨).
+- **portfolio 가로/세로 혼합**: 6개 항목 모두 `aspectRatio: "video"` 고정이라, 세로 사진(좁은 공간/인물 위주 구도)이 들어오면 상당 부분이 crop된다. `fit`/`position`은 항목별 객체형으로 이미 개별 조정 가능한 구조이므로, 실제 투입 시 사진별로 `position`(top/bottom 등)을 조정해야 할 가능성이 높다.
+- **service card**: 이미지 슬롯 자체가 없어 crop 위험도 없음(설계상 해당 없음).
+- **logo**: Header01이 `h-8 w-auto`(contain 방식, 비율 유지)로 처리해 crop 위험 없음. 현재 로고가 정사각형이라 별도 조정 불필요.
+
+### 실제 고객 이미지 적용 전 필수 조건
+
+- 고객 제공 이미지 사용 권한 확인(CLIENT_INTAKE_CHECKLIST.md 5·6번과 연동)
+- 원본 고해상도 확보
+- 이미지 파일명 규칙 통일(4번 규칙 참고: `portfolio-01`처럼 before/after 번호 일치)
+- extensionless path 유지(JSON에 확장자 기재 금지)
+- webp 우선 제공 권장(용량 대비 화질, avif 지원 시 더 우선)
+- Portfolio/BeforeAfter는 투입 후 항목별 `fit`/`position` 재조정 필요 여부 확인(모바일 crop 위험 항목 참고)
+- Hero는 가능하면 16:9 이상 와이드 비율로 촬영/제공받는 것을 권장(기존 7번 기록과 동일)
+- 실제 투입 후 `npx astro build` + `npm run validate:anchors` + 5개 viewport 화면 QA 필수

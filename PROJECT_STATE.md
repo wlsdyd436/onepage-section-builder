@@ -89,6 +89,10 @@ StickyMobileCTA01
 - Portfolio 6장 / BeforeAfter 6장은 아직 파일 없음 — fallback 기준으로만 검증된 상태
 - hero-02/03/05 파일은 public에 있지만 JSON 미반영(다음 단계 후보)
 - 공개 데모 이미지와 실제 고객 이미지는 분리 관리 예정(`.gitignore`로 고객 폴더는 이미 제외됨)
+- 실제 이미지 적용 전 자산 경로/누락/fallback 점검 완료(IMAGE_ASSET_CHECKLIST.md 9번 섹션)
+- Portfolio/BeforeAfter는 여전히 파일 없음(12장 누락), Services/Review는 설계상 이미지 미사용 확인
+- hero mobilePosition 필드는 정규화만 되고 실제로는 아직 소비되지 않음(향후 확장 포인트로 기록)
+- 실제 고객 이미지 적용은 아직 하지 않음
 
 ## 고객자료 수집 상태
 - [CLIENT_INTAKE_CHECKLIST.md](./CLIENT_INTAKE_CHECKLIST.md) 작성 완료
@@ -116,12 +120,14 @@ StickyMobileCTA01
 - 현재는 `/showroom`은 검사 대상이 아님(같은 컴포넌트 반복 렌더링으로 id가 의도적으로 겹칠 수 있어 `dist/index.html`만 검사)
 
 ## 다음 후보
-- 실제 Portfolio/BeforeAfter 이미지 확보 및 적용, crop/fit 재검증
+- 실제 Portfolio/BeforeAfter 이미지 적용 테스트(12장 확보 후 crop/fit/position 실제 재검증)
 - hero.media에 hero-02/03 등 추가해 슬라이더 활성화 검토
+- hero mobilePosition을 실제로 모바일/PC에 다르게 적용하는 확장 검토
+- 이미지 경로 검증 스크립트(scripts/validate-anchors.mjs와 유사한 형태) 검토
 - FinalCTA01 variant 필요성 검토
 - 두 번째 client sample 구조 설계
 - sections config prototype 문서화
 
 ## 마지막 업데이트
 - 날짜: 2026-07-13
-- 작업: nav anchor 검증 스크립트(`scripts/validate-anchors.mjs`, `npm run validate:anchors`) 추가, npx astro build 통과
+- 작업: 실제 이미지 적용 전 자산 경로/누락/fallback/모바일 crop 위험 점검 — IMAGE_ASSET_CHECKLIST.md에 현재 샘플 자산 점검 결과 추가, npx astro build 통과
