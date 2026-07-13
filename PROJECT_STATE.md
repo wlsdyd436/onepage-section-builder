@@ -103,12 +103,19 @@ StickyMobileCTA01
 - "회사소개"(target: `about`) 메뉴를 현재 실제 존재하는 "서비스"(target: `services`) 섹션으로 변경
 - About01 섹션은 추후 필요 시 별도 단계에서 검토
 
+## sections config / preset 설계 상태
+- [SECTION_CONFIG_DESIGN.md](./SECTION_CONFIG_DESIGN.md) 작성 완료
+- 고객별 sections config / preset 구조는 문서 설계까지 완료(실제 renderer 구현은 아직 없음)
+- 추천 방향: Header/Footer/Sticky는 layout 분리, main 콘텐츠 섹션만 sections[] config 기반인 하이브리드 구조
+
 ## 다음 후보
 - 실제 Portfolio/BeforeAfter 이미지 확보 및 적용, crop/fit 재검증
 - hero.media에 hero-02/03 등 추가해 슬라이더 활성화 검토
 - FinalCTA01 variant 필요성 검토
-- 고객별 sections config/preset 구조 검토
+- nav anchor 검증(navItems target ↔ 실제 section id) 스크립트/문서화
+- 두 번째 client sample 구조 설계
+- sections config prototype 문서화
 
 ## 마지막 업데이트
 - 날짜: 2026-07-13
-- 작업: Header nav dead anchor 정리 — "회사소개"(#about) 메뉴를 "서비스"(#services)로 변경, npx astro build 통과
+- 작업: SECTION_CONFIG_DESIGN.md 작성 — 고객별 sections config/preset/layout 구조 설계 정리, npx astro build 통과
