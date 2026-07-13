@@ -119,6 +119,11 @@ StickyMobileCTA01
 - HTML 주석 안 설명 텍스트(예: StickyMobileCTA01.astro의 `id="contact"` 언급)로 인한 거짓 중복을 피하기 위해 주석 제거 후 검사
 - 현재는 `/showroom`은 검사 대상이 아님(같은 컴포넌트 반복 렌더링으로 id가 의도적으로 겹칠 수 있어 `dist/index.html`만 검사)
 
+## 브라우저/모바일/인앱 브라우저 QA 기준 상태
+- [COMPATIBILITY_QA_CHECKLIST.md](./COMPATIBILITY_QA_CHECKLIST.md) 작성 완료
+- Chrome/Edge/Firefox/iOS Safari/Android Chrome/Samsung Internet/카카오톡·네이버 인앱 브라우저 등 고려 기준 문서화
+- 실제 자동화 테스트(Playwright cross-browser, 실기기 자동화 등) 구현은 아직 하지 않음
+
 ## 다음 후보
 - 실제 Portfolio/BeforeAfter 이미지 적용 테스트(12장 확보 후 crop/fit/position 실제 재검증)
 - hero.media에 hero-02/03 등 추가해 슬라이더 활성화 검토
@@ -130,4 +135,4 @@ StickyMobileCTA01
 
 ## 마지막 업데이트
 - 날짜: 2026-07-13
-- 작업: 실제 이미지 적용 전 자산 경로/누락/fallback/모바일 crop 위험 점검 — IMAGE_ASSET_CHECKLIST.md에 현재 샘플 자산 점검 결과 추가, npx astro build 통과
+- 작업: COMPATIBILITY_QA_CHECKLIST.md 작성 — 브라우저/모바일/인앱 브라우저 호환성 QA 기준 문서화, npx astro build 통과

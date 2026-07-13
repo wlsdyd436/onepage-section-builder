@@ -204,3 +204,4 @@ Content / Trust / Conversion:
 - [CLIENT_INTAKE_CHECKLIST.md](./CLIENT_INTAKE_CHECKLIST.md) — 실제 고객에게 원페이지 제작 전 받아야 할 자료 체크리스트
 - [DELIVERY_CHECKLIST.md](./DELIVERY_CHECKLIST.md) — 제작 완료 후 납품/배포 전 확인할 QA 체크리스트
 - [SECTION_CONFIG_DESIGN.md](./SECTION_CONFIG_DESIGN.md) — 고객별 sections config / preset / layout 구조 설계 문서
+- [COMPATIBILITY_QA_CHECKLIST.md](./COMPATIBILITY_QA_CHECKLIST.md) — 브라우저/모바일/인앱 브라우저 호환성 QA 기준

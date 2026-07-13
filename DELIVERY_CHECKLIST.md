@@ -114,6 +114,8 @@ Header → Hero → Portfolio → BeforeAfter → Review → ProcessSteps → FA
 - 네이버 인앱 브라우저
 - Edge
 
+브라우저/모바일/인앱 브라우저 상세 기준은 [COMPATIBILITY_QA_CHECKLIST.md](./COMPATIBILITY_QA_CHECKLIST.md)를 따릅니다. Chrome PC 단독 확인으로 납품 완료 판단하지 않습니다.
+
 ## 9. 기술 QA
 
 - [ ] `npx astro build` 성공
